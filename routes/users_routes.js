@@ -16,7 +16,7 @@ module.exports = function(router) {
         res.status(500).json({error: true});
       }
 
-      res.json(user); // Refactor to: res.json(req.user);
+      res.json({user: user}); // Refactor to: res.json(req.user);
     });
   });
 }

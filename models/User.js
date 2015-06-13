@@ -2,7 +2,7 @@
 
 var mongoose = require('mongoose');
 
-UserSchema = mongoose.Schema({
+var UserSchema = mongoose.Schema({
   eat:         { type: Number                              },
   facebook_id: { type: String, required: true, unique: true},
   friends:     { type: Array                               }
