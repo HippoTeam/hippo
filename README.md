@@ -12,6 +12,7 @@
 
 #### User Response Data
 /v2.3/me
+
 {
   "id": "10209208393971668",
   "first_name": "Clint",
@@ -29,8 +30,11 @@
 
 #### Taggable Friends Response Data
 /v2.3/me/taggable_friends?fields=picture.width(500),name
+
 Response includes two objects:
+
 **data**: Array of Objects - one for each friend. (only one friend shown, typically many more)
+
 **paging**: Loading next block of friends
 ```
 {
