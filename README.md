@@ -31,8 +31,10 @@
 #### Taggable Friends Response Data
 /v2.3/me/taggable_friends?fields=picture.width(500),name
 
-Response includes two objects: \n
-**data**: Array of Objects - one for each friend. (only one friend shown, typically many more) \n
+Response includes two objects:
+
+**data**: Array of Objects - one for each friend. (only one friend shown, typically many more)
+
 **paging**: Loading next block of friends
 ```
 {
