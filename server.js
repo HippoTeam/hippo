@@ -8,7 +8,7 @@ var app      = express();
 var usersRouter = express.Router();
 
 // Connect DB
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/hippo_dev')
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/hippo_dev');
 
 // Load routers
 require('./routes/users_routes.js')(usersRouter);

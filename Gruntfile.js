@@ -4,6 +4,7 @@ module.exports = function(grunt) {
 
   // Loaded Tasks
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-mocha-test'    );
 
   // Task Configuration
   grunt.initConfig({
@@ -26,10 +27,21 @@ module.exports = function(grunt) {
         // Environments
         node: true
       }
+    },
+    mochaTest: {
+      test: {
+        options: {
+          reporter: 'spec',
+          captureFile: false,
+          quiet: false,
+          clearRequireCache: false
+        },
+        src: ['test/*_test.js']
+      }
     }
   });
 
   // Registered Tasks
-  grunt.registerTask('test',    ['jshint:dev']);
+  grunt.registerTask('test',    ['jshint:dev', 'mochaTest']);
   grunt.registerTask('default', ['test'    ]);
 };
