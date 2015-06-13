@@ -12,7 +12,7 @@
 
 #### User Response Data
 /v2.3/me
-
+```
 {
   "id": "10209208393971668",
   "first_name": "Clint",
@@ -25,14 +25,14 @@
   "updated_time": "2015-06-05T23:41:38+0000",
   "verified": true
 }
-
+```
 
 
 #### Taggable Friends Response Data
 /v2.3/me/taggable_friends?fields=picture.width(500),name
 
-Response includes two objects:
-**data**: Array of Objects - one for each friend. (only one friend shown, typically many more)
+Response includes two objects: \n
+**data**: Array of Objects - one for each friend. (only one friend shown, typically many more) \n
 **paging**: Loading next block of friends
 ```
 {
