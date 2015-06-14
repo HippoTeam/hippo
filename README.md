@@ -1,4 +1,5 @@
 # Hippo App
+[![Build Status](https://travis-ci.org/HippoTeam/hippo.svg?branch=master)](https://travis-ci.org/HippoTeam/hippo)
 
 ###Contributors:
 - Jowell
