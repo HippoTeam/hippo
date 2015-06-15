@@ -82,7 +82,7 @@ describe('cards controller', function() {
       expect($scope.cards.indexOf(card)).toBe(-1);
       $httpBackend.flush();
       expect($scope.errors.length).toBe(1);
-      expect($scope.errors[0].msg).toBe('could not remove card: test card')
+      expect($scope.errors[0].msg).toBe('could not remove card: test card');
     });
 
   });

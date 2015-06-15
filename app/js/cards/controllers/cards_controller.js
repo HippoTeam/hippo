@@ -25,7 +25,7 @@ module.exports = function(app) {
         .error(function(data) {
           console.log(data);
           $scope.errors.push({msg: 'could not create new card'});
-        })
+        });
     };
 
     $scope.removeCard = function(card) {
