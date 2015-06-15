@@ -50,5 +50,18 @@ module.exports = function(app) {
       $scope.errors = [];
       $scope.getAll();
     };
+
+    $scope.isFriend = function(card) {
+      // card.button = true;
+    };
+
+    $scope.isFriendStyle = function(card) {
+      // if(card.button) {
+      //   return 'green';
+      // } else {
+      //   return 'red';
+      // }
+    };
+
   }]);
 };
