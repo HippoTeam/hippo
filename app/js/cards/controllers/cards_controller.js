@@ -1,49 +1,43 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('cardsController', ['$scope', '$http', function($scope, $http) {
+  app.controller('cardsController', ['$scope', 'RESTResource', function($scope, resource) {
+    var Card = resource('cards');
+
     $scope.errors = [];
     $scope.cards = [];
 
     $scope.getAll = function() {
-      $http.get('/api/cards')
-        .success(function(data) {
-          $scope.cards = data;
-        })
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'error retrieving cards'});
-        });
+      Card.getAll(function(err, data) {
+        if(err) return $scope.errors.push({msg: 'error retrieving cards'});
+        $scope.cards = data;
+      });
     };
 
     $scope.createNewCard = function() {
-      $http.post('/api/cards', $scope.newCard)
-        .success(function(data) {
-          $scope.cards.push(data);
-          $scope.newCard = null;
-        })
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not create new card'});
-        })
+      var newCard = $scope.newCard;
+      $scope.newCard = null;
+      $scope.cards.push(newCard);
+      Card.create(newCard, function(err, data) {
+        if(err) return $scope.errors.push({msg: 'could not save new card' + newCard.personName});
+        $scope.cards.splice($scope.cards.indexOf(newCard), 1, data);
+      });
     };
 
     $scope.removeCard = function(card) {
       $scope.cards.splice($scope.cards.indexOf(card), 1);
-      $http.delete('/api/cards/' + card._id)
-        .error(function(data) {
-          console.log(data);
+      Card.remove(card, function(err) {
+        if(err) {
           $scope.errors.push({msg: 'could not remove card: ' + card.personName});
-        });
+        }
+      });
     };
 
     $scope.saveCard = function(card) {
       card.editing = false;
-      $http.put('/api/cards/' + card._id, card)
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not update card'});
-        });
+      Card.save(card, function(err, data) {
+        if(err) $scope.errors.push({msg: 'could not update card'});
+      });
     };
 
     $scope.clearErrors = function() {
