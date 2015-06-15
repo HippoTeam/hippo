@@ -1,15 +1,22 @@
 'use strict';
 
-process.env.MONGOLAB_URI = 'mongodb://localhost/hippo_test';
-require('../server');
-
 var mongoose = require('mongoose');
 var chai = require('chai');
 var chaihttp = require('chai-http');
 chai.use(chaihttp);
+var envVar   = require('./test_env_vars.js');
 var expect = chai.expect;
-
 var Card = require('../models/Card');
+
+// Env Variables
+process.env.FACEBOOK_APP_ID     = envVar.FACEBOOK_APP_ID;
+process.env.FACEBOOK_APP_SECRET = envVar.FACEBOOK_APP_SECRET;
+
+// Set test db
+process.env.MONGOLAB_URI = 'mongodb://localhost/hippo_test';
+
+// Start server
+require('../server');
 
 describe('cards REST api', function() {
 
@@ -21,7 +28,7 @@ describe('cards REST api', function() {
 
   it('should be able to create a new card', function(done) {
     chai.request('localhost:3000')
-      .post('/api/cards')
+      .post('/cards')
       .send({personPic: 'url', personName:'testname'})
       .end(function(err, res) {
         expect(err).to.eql(null);
@@ -34,7 +41,7 @@ describe('cards REST api', function() {
 
   it('should get an array of cards', function(done) {
     chai.request('localhost:3000')
-    .get('/api/cards')
+    .get('/cards')
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(typeof res.body).to.eql('object');
@@ -64,7 +71,7 @@ describe('cards REST api', function() {
     it('should update a card', function(done) {
       var id = this.testCard._id;
       chai.request('localhost:3000')
-      .put('/api/cards/' + id)
+      .put('/cards/' + id)
       .send({personPic: 'updated url', personName:'updated testname'})
       .end(function(err, res) {
         expect(err).to.eql(null);
@@ -75,7 +82,7 @@ describe('cards REST api', function() {
 
     it('should be able to delete a card', function(done) {
       chai.request('localhost:3000')
-        .del('/api/cards/' + this.testCard._id)
+        .del('/cards/' + this.testCard._id)
         .end(function(err, res) {
           expect(err).to.eql(null);
           expect(res.body.msg).to.eql('success');
