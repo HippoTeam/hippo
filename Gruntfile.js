@@ -42,6 +42,7 @@ module.exports = function(grunt) {
   });
 
   // Registered Tasks
+  grunt.registerTask('foreman', [                         ]);
   grunt.registerTask('test',    ['jshint:dev', 'mochaTest']);
   grunt.registerTask('default', ['test'    ]);
 };
