@@ -51,12 +51,16 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function(person) {
-
+    $scope.isFriend = function(card) {
+      // card.button = true;
     };
 
-    $scope.isFriendStyle = function() {
-      return 'green';
+    $scope.isFriendStyle = function(card) {
+      // if(card.button) {
+      //   return 'green';
+      // } else {
+      //   return 'red';
+      // }
     };
 
   }]);
