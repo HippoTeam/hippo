@@ -67,10 +67,52 @@ module.exports = function(grunt) {
         src: ['Gruntfile.js',
               '/models/**/*.js',
               '/routes/**/*.js',
-              '/test/**/*.js',
+              '/test/*test.js',
               '*.js'
              ],
+        options: {
+          globals: {
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
       },
+
+      client: {
+        src: ['app/**/*.js',
+              'test/client/*test.js'
+              ],
+        options: {
+          globals: {
+            angular: true,
+            describe: true,
+            it: true,
+            before: true,
+            after: true
+          }
+        }
+      },
+
+      karma: {
+        src: ['test/karma_tests/*test.js'],
+        options: {
+          globals: {
+            angular: true,
+            describe: true,
+            it: true,
+            expect: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
+      },
+
       options: {
         // Base Options
         eqeqeq: true,
@@ -80,6 +122,7 @@ module.exports = function(grunt) {
         node: true
       }
     },
+
     mochaTest: {
       test: {
         options: {
@@ -98,9 +141,10 @@ module.exports = function(grunt) {
   });
 
   // Registered Tasks
-  grunt.registerTask('build:dev', ['webpack:client', 'copy:html']);
+  grunt.registerTask('build:dev', ['jshint:client', 'webpack:client', 'copy:html']);
   grunt.registerTask('build', ['build:dev']);
-  grunt.registerTask('karmatest', ['webpack:karma_test', 'karma:test']);
-  grunt.registerTask('test',    ['jshint:dev', 'karmatest', 'mochaTest']);
+  grunt.registerTask('karmatest', ['jshint:karma', 'webpack:karma_test', 'karma:test']);
+  grunt.registerTask('mocharun', ['jshint:dev', 'mochaTest']);
+  grunt.registerTask('test',    ['karmatest', 'mocharun']);
   grunt.registerTask('default', ['test'    ]);
 };
