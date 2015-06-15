@@ -29,7 +29,7 @@ describe('User_Routes', function() {
       });
 
       it('returns the user matching the id', function(done) {
-        chai.request('localhost:3000')
+        chai.request('localhost:8080')
           .get('/users/' + newUser._id)
           .end(function(err, res) {
             expect(err).to.eq(null);

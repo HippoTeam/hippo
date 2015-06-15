@@ -15,6 +15,9 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/hippo_dev');
 // Initialize passport
 app.use(passport.initialize());
 
+// Load Strategies
+require('./lib/passport_strategy.js')(passport);
+
 // Load routers
 require('./routes/users_routes.js' )(usersRouter           );
 require('./routes/oauth2_routes.js')(oauth2Router, passport);
