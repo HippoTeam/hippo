@@ -5,10 +5,48 @@ module.exports = function(grunt) {
   // Loaded Tasks
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-mocha-test'    );
+  grunt.loadNpmTasks('grunt-webpack'    );
+  grunt.loadNpmTasks('grunt-contrib-copy'    );
+  grunt.loadNpmTasks('grunt-contrib-clean'    );
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Task Configuration
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    webpack: {
+      client: {
+        entry: __dirname + '/app/js/client.js',
+        output: {
+          path: 'build/',
+          file: 'bundle.js'
+        }
+      },
+      test: {
+        entry: __dirname + '/test/client/test.js',
+        output: {
+          path: 'test/client/',
+          file: ' test_bundle.js'
+        }
+      }
+    },
+
+    copy: {
+      html: {
+        cwd: 'app/',
+        expand: true,
+        flatten: false,
+        src: '**/*.html',
+        dest: 'build/',
+        filter: 'isFile'
+      }
+    },
+
+    clean: {
+      dev: {
+        src: 'build/'
+      }
+    },
 
     jshint: {
       dev: {
@@ -39,11 +77,17 @@ module.exports = function(grunt) {
         },
         src: ['test/*_test.js']
       }
+    },
+    watch: {
+      files: ['./app/**/*.js', './app/**/*.html'],
+      tasks: ['build']
     }
   });
 
   // Registered Tasks
-  grunt.registerTask('foreman', [                         ]);
-  grunt.registerTask('test',    ['jshint:dev', 'mochaTest']);
-  grunt.registerTask('default', ['test'    ]);
+  grunt.registerTask('foreman',   [                             ]);
+  grunt.registerTask('build:dev', ['webpack:client', 'copy:html']);
+  grunt.registerTask('build',     ['build:dev'                  ]);
+  grunt.registerTask('test',      ['jshint:dev', 'mochaTest'    ]);
+  grunt.registerTask('default',   ['test'                       ]);
 };

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Client Side</title>
+</head>
+<body data-ng-app="hippoApp">
+  <main data-ng-controller="cardsController" data-ng-init="getAll()">
+    <h1>Cards:</h1>
+    <aside data-ng-if="errors.length">
+      <h2>Errors:</h2>
+      <ul data-ng-repeat="error in errors">
+        <li>{{error.msg}}</li>
+      </ul>
+      <button data-ng-click="clearErrors()">Clear Errors</button>
+    </aside>
+
+    <form name="newCardForm" data-ng-submit="createNewCard()">
+      <label for="username">personPic</label>
+      <input type="text" required data-ng-model="newCard.personPic">
+      <label for="username">personName</label>
+      <input type="text" required data-ng-model="newCard.personName">
+      <button type="submit" data-ng-disabled="newCardForm.$invalid">Create New Card</button>
+    </form>
+
+    <ul data-ng-repeat="card in cards">
+      <li>{{card.personPic}} - {{card.personName}}
+          <button data-ng-click="removeCard(card)">Delete</button>
+          <button data-ng-if="!card.editing" data-ng-click="card.editing = true">Edit</button>
+          <form name="{{'editing' + card._id}}" data-ng-if="card.editing" data-ng-submit="saveCard(card)">
+            <label for="username">personPic</label>
+            <input type="text" data-ng-model="card.personPic">
+            <label for="username">personName</label>
+            <input type="text" data-ng-model="card.personName">
+            <button type="submit">Save Changes</button>
+            <button data-ng-click="card.editing=false">Cancel</button>
+          </form>
+      </li>
+    </ul>
+
+  </main>
+  <script src="bundle.js"></script>
+</body>
+</html>
