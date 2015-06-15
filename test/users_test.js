@@ -10,8 +10,7 @@ chai.use(chaihttp);
 
 // Set Test Env Variables
 process.env.MONGOLAB_URI        = 'mongodb://localhost/hippo_test';
-process.env.FACEBOOK_APP_ID     = envVar.FACEBOOK_APP_ID;
-process.env.FACEBOOK_APP_SECRET = envVar.FACEBOOK_APP_SECRET;
+
 
 
 //Start Server
