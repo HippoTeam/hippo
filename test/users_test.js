@@ -1,8 +1,8 @@
 'use strict';
 
-var chai     = require('chai'             );
+var chai     = require('chai'              );
 var chaihttp = require('chai-http'         );
-var envVar   = require('./test_env_vars.js')
+var envVar   = require('./test_env_vars.js');
 var expect   = chai.expect;
 var mongoose = require('mongoose'          );
 var User     = require('../models/User.js' );
@@ -33,7 +33,7 @@ describe('User_Routes', function() {
       });
 
       it('returns the user matching the id', function(done) {
-        chai.request('localhost:8080')
+        chai.request('localhost:3000')
           .get('/users/' + newUser._id)
           .end(function(err, res) {
             expect(err).to.eq(null);
