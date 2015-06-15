@@ -39,15 +39,15 @@
     </ul>
 
     <section>
-      <img src="http://icons.iconarchive.com/icons/visualpharm/animals/256/Hippopotamus-icon.png" width="256px" height="256px">
+      <img src={{cards[0].personPic}} width="256px" height="256px">
       <form>
         <p>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">Alpha</button>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">Bravo</button>
+          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[0].personName.split(' ')[0]}}</button>
+          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[1].personName.split(' ')[0]}}</button>
         </p>
         <p>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">Charlie</button>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">Delta</button>
+          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[2].personName.split(' ')[0]}}</button>
+          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[3].personName.split(' ')[0]}}</button>
         </p>
       </form>
     </section>

@@ -6,7 +6,7 @@ module.exports = function(app) {
     $scope.cards = [];
 
     $scope.getAll = function() {
-      $http.get('/api/cards')
+      $http.get('/cards')
         .success(function(data) {
           $scope.cards = data;
         })
@@ -17,7 +17,7 @@ module.exports = function(app) {
     };
 
     $scope.createNewCard = function() {
-      $http.post('/api/cards', $scope.newCard)
+      $http.post('/cards', $scope.newCard)
         .success(function(data) {
           $scope.cards.push(data);
           $scope.newCard = null;
@@ -30,7 +30,7 @@ module.exports = function(app) {
 
     $scope.removeCard = function(card) {
       $scope.cards.splice($scope.cards.indexOf(card), 1);
-      $http.delete('/api/cards/' + card._id)
+      $http.delete('/cards/' + card._id)
         .error(function(data) {
           console.log(data);
           $scope.errors.push({msg: 'could not remove card: ' + card.personName});
