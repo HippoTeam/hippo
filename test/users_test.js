@@ -1,14 +1,18 @@
 'use strict';
 
 var chai     = require('chai'             );
-var chaihttp = require('chai-http'        );
+var chaihttp = require('chai-http'         );
+var envVar   = require('./test_env_vars.js')
 var expect   = chai.expect;
-var mongoose = require('mongoose'         );
-var User     = require('../models/User.js');
+var mongoose = require('mongoose'          );
+var User     = require('../models/User.js' );
 chai.use(chaihttp);
 
-// Point to db via
-process.env.MONGOLAB_URI = 'mongodb://localhost/hippo_test';
+// Set Test Env Variables
+process.env.MONGOLAB_URI        = 'mongodb://localhost/hippo_test';
+process.env.FACEBOOK_APP_ID     = envVar.FACEBOOK_APP_ID;
+process.env.FACEBOOK_APP_SECRET = envVar.FACEBOOK_APP_SECRET;
+
 
 //Start Server
 require('../server.js');

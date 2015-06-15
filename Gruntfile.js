@@ -13,6 +13,7 @@ module.exports = function(grunt) {
     jshint: {
       dev: {
         src: ['Gruntfile.js',
+              '/lib/**/*.js',
               '/models/**/*.js',
               '/routes/**/*.js',
               '/test/**/*.js',
