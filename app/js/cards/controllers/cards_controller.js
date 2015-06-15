@@ -50,5 +50,14 @@ module.exports = function(app) {
       $scope.errors = [];
       $scope.getAll();
     };
+
+    $scope.isFriend = function(person) {
+
+    };
+
+    $scope.isFriendStyle = function() {
+      return 'green';
+    };
+
   }]);
 };
