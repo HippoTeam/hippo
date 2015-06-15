@@ -63,6 +63,14 @@ module.exports = function(grunt) {
     },
 
     jshint: {
+      client: {
+        src: ['./app/js/**/*.js'],
+        options: {
+          globals: {
+            angular: true
+          }
+        }
+      },
       dev: {
         src: ['Gruntfile.js',
               '/lib/**/*.js',
@@ -99,10 +107,10 @@ module.exports = function(grunt) {
   });
 
   // Registered Tasks
-  grunt.registerTask('foreman',   [                                      ]);
-  grunt.registerTask('build:dev', ['webpack:client', 'copy:html'         ]);
-  grunt.registerTask('karmatest', ['webpack:karma_test', 'karma:test'    ]);
-  grunt.registerTask('test',      ['jshint:dev', 'karmatest', 'mochaTest']);
-  grunt.registerTask('build',     ['build:dev'                           ]);
-  grunt.registerTask('default',   ['test'                                ]);
+  grunt.registerTask('foreman',    [                                      ]);
+  grunt.registerTask('build:dev',  ['webpack:client', 'copy:html'         ]);
+  grunt.registerTask('karmatest',  ['webpack:karma_test', 'karma:test'    ]);
+  grunt.registerTask('test',       ['jshint:dev', 'karmatest', 'mochaTest']);
+  grunt.registerTask('build',      ['build:dev'                           ]);
+  grunt.registerTask('default',    ['test'                                ]);
 };

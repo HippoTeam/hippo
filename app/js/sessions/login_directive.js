@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function() {
+module.exports = function(app) {
   app.directive('loginDirective', function() {
     return {
       restrict: 'AE',

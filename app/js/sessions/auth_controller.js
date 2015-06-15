@@ -12,10 +12,10 @@ module.exports = function(app) {
 
         if (err) {
           console.log('Error signing in. Error: ', err);
-          return $scope.errors.push({error: true, msg: 'error signing in'})
+          return $scope.errors.push({error: true, msg: 'error signing in'});
         }
 
-        $location.path('/learn')
+        $location.path('/learn');
       });
     };
   }]);

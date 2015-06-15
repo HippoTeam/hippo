@@ -28,5 +28,5 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
     .when('/', {
       redirectTo: '/login'
     })
-    .otherwise({ redirectTo: '/login' })
+    .otherwise({ redirectTo: '/login' });
 }]);
