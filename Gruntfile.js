@@ -8,6 +8,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-webpack'    );
   grunt.loadNpmTasks('grunt-contrib-copy'    );
   grunt.loadNpmTasks('grunt-contrib-clean'    );
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   // Task Configuration
   grunt.initConfig({
@@ -75,6 +76,10 @@ module.exports = function(grunt) {
         },
         src: ['test/*_test.js']
       }
+    },
+    watch: {
+      files: ['./app/**/*.js', './app/**/*.html'],
+      tasks: ['build']
     }
   });
 
