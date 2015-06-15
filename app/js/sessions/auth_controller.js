@@ -14,6 +14,7 @@ module.exports = function(app) {
           console.log('Error signing in. Error: ', err);
           return $scope.errors.push({error: true, msg: 'error signing in'})
         }
+
         $location.path('/learn')
       });
     };

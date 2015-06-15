@@ -22,7 +22,7 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
       controller:  'cards_controller'
     })
     .when('/login', {
-      templateUrl: 'templates/views/login.html',
+      templateUrl: 'templates/views/login_view.html',
       controller:  'authController'
     })
     .when('/', {
