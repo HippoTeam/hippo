@@ -35,7 +35,7 @@ describe('cards controller', function() {
     });
 
     it('should make a get request on index', function() {
-      $httpBackend.expectGET('/api/cards').respond(200, [{_id: '1', personName: 'test card'}]);
+      $httpBackend.expectGET('/cards').respond(200, [{_id: '1', personName: 'test card'}]);
       $scope.getAll();
       $httpBackend.flush();
       expect($scope.cards[0].personName).toBe('test card');
@@ -43,7 +43,7 @@ describe('cards controller', function() {
     });
 
     it('should correctly handle errors', function() {
-      $httpBackend.expectGET('/api/cards').respond(500, {msg: 'server error'}) ;
+      $httpBackend.expectGET('/cards').respond(500, {msg: 'server error'}) ;
       $scope.getAll();
       $httpBackend.flush();
       expect($scope.errors.length).toBe(1);
@@ -52,7 +52,7 @@ describe('cards controller', function() {
 
     it('should be able to save a new card', function() {
       $scope.newCard = {personName: 'test card'};
-      $httpBackend.expectPOST('/api/cards').respond(200, {_id: '2', personName: 'test card'});
+      $httpBackend.expectPOST('/cards').respond(200, {_id: '2', personName: 'test card'});
       $scope.createNewCard();
       $httpBackend.flush();
       expect($scope.cards[0].personName).toBe('test card');
@@ -63,7 +63,7 @@ describe('cards controller', function() {
     it('should delete a card', function() {
       var card = {_id: '3', personName: 'test card'};
       $scope.cards.push(card);
-      $httpBackend.expectDELETE('/api/cards/3').respond(200, {msg: 'success!'});
+      $httpBackend.expectDELETE('/cards/3').respond(200, {msg: 'success!'});
 
       expect($scope.cards.indexOf(card)).not.toBe(-1);
       $scope.removeCard(card);
@@ -75,7 +75,7 @@ describe('cards controller', function() {
     it('should delete a card even on server error', function() {
       var card = {_id: '4', personName: 'test card'};
       $scope.cards.push(card);
-      $httpBackend.expectDELETE('/api/cards/4').respond(500, {msg: 'deleted'});
+      $httpBackend.expectDELETE('/cards/4').respond(500, {msg: 'deleted'});
 
       expect($scope.cards.indexOf(card)).not.toBe(-1);
       $scope.removeCard(card);
