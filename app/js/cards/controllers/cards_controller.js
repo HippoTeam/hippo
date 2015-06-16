@@ -1,13 +1,20 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', function($scope, resource, copy, empty) {
+
+  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
+    if (!auth.isSignedIn()) { $location.path('/login'); }
+
     var Card = resource('cards');
 
     $scope.errors = [];
     $scope.cards = [];
 
     $scope.getAll = function() {
+      if (getTokenParam) {
+        auth.setEat(getTokenParam);
+      }
+
       Card.getAll(function(err, data) {
         if(err) return $scope.errors.push({msg: 'error retrieving cards'});
         $scope.cards = data;
@@ -59,8 +66,12 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function(card) {
-      // card.button = true;
+    $scope.isFriend = function($event) {
+      if($event.target.nextSibling.style){
+        $event.target.style.backgroundColor = 'lightcoral';
+      } else {
+        $event.target.firstElementChild.style.backgroundColor = 'lightcoral';
+      }
     };
 
     $scope.isFriendStyle = function(card) {
@@ -70,6 +81,12 @@ module.exports = function(app) {
       //   return 'red';
       // }
     };
+
+    function getTokenParam(locStr) {
+      var locArr = locStr.split("/");
+
+      return locArr[locArr.length -1];
+    }
 
   }]);
 };
