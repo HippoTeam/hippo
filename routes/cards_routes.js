@@ -2,6 +2,7 @@
 
 var Card = require('../models/Card');
 var bodyparser = require('body-parser');
+var randomArray = require('../lib/randomArrayElements');
 
 module.exports = function(router) {
   router.use(bodyparser.json());
@@ -12,7 +13,7 @@ module.exports = function(router) {
         console.log(err);
         return res.status(500).json({msg: 'internal server error'});
       }
-      res.json(data);
+      res.json(randomArray(data, 4));
     });
   });
 
