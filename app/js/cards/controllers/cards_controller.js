@@ -67,14 +67,14 @@ module.exports = function(app) {
     };
 
     $scope.isFriend = function($event) {
-      if ($event.target.innerHTML === $scope.cards.answer){
+      if ($event.target.innerText === $scope.cards.answer) {
         if($event.target.nextSibling.style){
           $event.target.style.backgroundColor = 'green';
         } else {
           $event.target.firstElementChild.style.backgroundColor = 'green';
         }
       } else {
-        if($event.target.nextSibling.style){
+        if($event.target.nextSibling.style) {
           $event.target.style.backgroundColor = 'lightcoral';
         } else {
           $event.target.firstElementChild.style.backgroundColor = 'lightcoral';
