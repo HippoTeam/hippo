@@ -60,13 +60,13 @@
 
 <section data-ng-controller="cardsController" data-ng-init="getAll()">
   <md-content layout-padding>
-    <md-card>
+    <md-card layout-align="center center">
      <img src="https://s-media-cache-ak0.pinimg.com/originals/67/f3/05/67f3053febdf5048ef696e87537c9e55.jpg" class="circular md-avatar" alt="image caption">
      <img src={{cards[0][0].personPic}} class="circular md-avatar" alt="image caption">
      <md-card-content>
-       <h2>Guess Who??</h2>
+       <md-button data-ng-click="">NEXT</md-button>
      </md-card-content>
-     <div class="md-actions" layout="row" layout-align="center center">
+     <div class="md-actions" layout="row">
        <md-button data-ng-click="isFriend($event)">{{cards[0][0].personName.split(' ')[0]}}</md-button>
        <md-button data-ng-click="isFriend($event)">{{cards[1][0].personName.split(' ')[0]}}</md-button>
        <md-button data-ng-click="isFriend($event)">{{cards[2][0].personName.split(' ')[0]}}</md-button>
