@@ -1,10 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" charset="UTF-8" />
+  <link rel="stylesheet" href="/css/angular-material.css">
+  <style>
+  .circular {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  	width: 300px;
+  	height: 300px;
+  	border-radius: 150px;
+  	-webkit-border-radius: 150px;
+  	-moz-border-radius: 150px;
+  	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	}
+  </style>
   <title>Client Side</title>
 </head>
 <body data-ng-app="hippoApp">
+
+  <div layout="row" ng-controller="sidenavController">
+  <md-sidenav md-component-id="left" class="md-sidenav-left">
+    <md-list>
+      <md-list-item>
+        <md-button data-ng-href="/auth/facebook">
+            Login to Facebook
+        </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button data-ng-href="/logout">
+            Logout
+        </md-button>
+
+      </md-list-item>
+      <md-list-item>
+        <md-button>
+            Facebook friend cards
+        </md-button>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+  <md-toolbar>
+    <div class="md-toolbar-tools md-tall" >
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
+      <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+      </md-button>
+      <span>Hippo</span>
+      <!-- fill up the space between left and right area -->
+      <span flex></span>
+      <md-button class="md-icon-button" aria-label="More">
+        <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+      </md-button>
+    </div>
+  </md-toolbar>
+</div>
+
+<md-content layout-padding>
+  <md-card>
+   <img src="https://s-media-cache-ak0.pinimg.com/originals/67/f3/05/67f3053febdf5048ef696e87537c9e55.jpg" class="circular md-avatar" alt="image caption">
+   <md-card-content>
+     <h2>Guess Who??</h2>
+   </md-card-content>
+   <div class="md-actions" layout="row" layout-align="end center">
+     <md-button>Jowell Villasin</md-button>
+     <md-button>Clint Nelson</md-button>
+     <md-button>Eeshan Kumar</md-button>
+     <md-button>Lamson Le</md-button>
+   </div>
+  </md-card>
+</md-content>
+
+</div>
   <main data-ng-controller="cardsController" data-ng-init="getAll()">
     <h1>Cards:</h1>
     <aside data-ng-if="errors.length">

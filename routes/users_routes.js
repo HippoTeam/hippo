@@ -9,7 +9,7 @@ module.exports = function(router) {
 
   // R
   router.get('/users/:id', function(req, res) {
-    // TODO: refactor this to auth module
+    // TODO: REFACTOR THIS TO REQUIRE AUTH
     User.findOne({_id: req.params.id}, function(err, user) {
       if (err) {
         console.log('Error finding user by id. Error: ', err);
