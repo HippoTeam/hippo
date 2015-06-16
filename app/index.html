@@ -58,20 +58,23 @@
   </md-toolbar>
 </div>
 
-<md-content layout-padding>
-  <md-card>
-   <img src="https://s-media-cache-ak0.pinimg.com/originals/67/f3/05/67f3053febdf5048ef696e87537c9e55.jpg" class="circular md-avatar" alt="image caption">
-   <md-card-content>
-     <h2>Guess Who??</h2>
-   </md-card-content>
-   <div class="md-actions" layout="row" layout-align="end center">
-     <md-button>Jowell Villasin</md-button>
-     <md-button>Clint Nelson</md-button>
-     <md-button>Eeshan Kumar</md-button>
-     <md-button>Lamson Le</md-button>
-   </div>
-  </md-card>
-</md-content>
+<section data-ng-controller="cardsController" data-ng-init="getAll()">
+  <md-content layout-padding>
+    <md-card>
+     <img src="https://s-media-cache-ak0.pinimg.com/originals/67/f3/05/67f3053febdf5048ef696e87537c9e55.jpg" class="circular md-avatar" alt="image caption">
+     <img src={{cards[0][0].personPic}} class="circular md-avatar" alt="image caption">
+     <md-card-content>
+       <h2>Guess Who??</h2>
+     </md-card-content>
+     <div class="md-actions" layout="row" layout-align="center center">
+       <md-button data-ng-click="isFriend($event)">{{cards[0][0].personName.split(' ')[0]}}</md-button>
+       <md-button data-ng-click="isFriend($event)">{{cards[1][0].personName.split(' ')[0]}}</md-button>
+       <md-button data-ng-click="isFriend($event)">{{cards[2][0].personName.split(' ')[0]}}</md-button>
+       <md-button data-ng-click="isFriend($event)">{{cards[3][0].personName.split(' ')[0]}}</md-button>
+     </div>
+    </md-card>
+  </md-content>
+</section>
 
 </div>
   <main data-ng-controller="cardsController" data-ng-init="getAll()">
@@ -104,20 +107,6 @@
           </div>
       </li>
     </ul>
-
-    <section>
-      <img src={{cards[0].personPic}} width="256px" height="256px">
-      <form>
-        <p>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[0].personName.split(' ')[0]}}</button>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[1].personName.split(' ')[0]}}</button>
-        </p>
-        <p>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[2].personName.split(' ')[0]}}</button>
-          <button type="button" data-ng-click="isFriend(card)" ng-style="{'background-color':isFriendStyle(card)}">{{cards[3].personName.split(' ')[0]}}</button>
-        </p>
-      </form>
-    </section>
 
   </main>
   <script src="bundle.js"></script>

@@ -18,6 +18,7 @@ module.exports = function(app) {
       Card.getAll(function(err, data) {
         if(err) return $scope.errors.push({msg: 'error retrieving cards'});
         $scope.cards = data;
+        console.log(data);
       });
     };
 
@@ -66,8 +67,12 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function(card) {
-      // card.button = true;
+    $scope.isFriend = function($event) {
+      if($event.target.nextSibling.style){
+        $event.target.style.backgroundColor = 'lightcoral';
+      } else {
+        $event.target.firstElementChild.style.backgroundColor = 'lightcoral';
+      }
     };
 
     $scope.isFriendStyle = function(card) {
