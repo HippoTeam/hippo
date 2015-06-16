@@ -39,13 +39,12 @@ describe('cards REST api', function() {
       });
   });
 
-  it('should get an array of cards', function(done) {
+  it('should get an object with cards', function(done) {
     chai.request('localhost:3000')
     .get('/cards')
     .end(function(err, res) {
       expect(err).to.eql(null);
       expect(typeof res.body).to.eql('object');
-      expect(Array.isArray(res.body)).to.eql(true);
       done();
     });
   });

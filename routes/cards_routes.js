@@ -13,7 +13,12 @@ module.exports = function(router) {
         console.log(err);
         return res.status(500).json({msg: 'internal server error'});
       }
-      res.json(randomArray(data, 4));
+      var array = randomArray(data, 4)
+      var returnObj = {};
+      returnObj.pic_url = array[0].personPic;
+      returnObj.answer = array[0].personName;
+      returnObj.names = randomArray(array, 4);
+      res.json(returnObj);
     });
   });
 
