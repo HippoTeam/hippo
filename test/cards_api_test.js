@@ -20,7 +20,7 @@ require('../server');
 
 describe('cards REST api', function() {
 
-  after(function(done) {
+  afterEach(function(done) {
     mongoose.connection.db.dropDatabase(function() {
       done();
     });
@@ -39,14 +39,41 @@ describe('cards REST api', function() {
       });
   });
 
-  it('should get an array of cards', function(done) {
-    chai.request('localhost:3000')
-    .get('/cards')
-    .end(function(err, res) {
-      expect(err).to.eql(null);
-      expect(typeof res.body).to.eql('object');
-      expect(Array.isArray(res.body)).to.eql(true);
-      done();
+  describe('needs at least 4 existing cards to work with' , function() {
+    beforeEach(function(done) {
+      var count = 0;
+      var testCard1 = new Card({personPic: 'pic1', personName:'name1'});
+      var testCard2 = new Card({personPic: 'pic2', personName:'name2'});
+      var testCard3 = new Card({personPic: 'pic3', personName:'name3'});
+      var testCard4 = new Card({personPic: 'pic4', personName:'name4'});
+      testCard1.save(callbackFun);
+      testCard2.save(callbackFun);
+      testCard3.save(callbackFun);
+      testCard4.save(callbackFun);
+      function callbackFun(err, data) {
+        if(err) throw err;
+        allSaved();
+      }
+      function allSaved() {
+        count++;
+        if (count === 4) {
+          done();
+        }
+      }
+    });
+
+    it('should get an object on a get request', function(done) {
+      chai.request('localhost:3000')
+      .get('/cards')
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(typeof res.body).to.eql('object');
+        expect(res.body).to.have.property('_id');
+        expect(res.body).to.have.property('pic_url');
+        expect(res.body).to.have.property('answer');
+        expect(res.body.names.length).to.eql(4);
+        done();
+      });
     });
   });
 
