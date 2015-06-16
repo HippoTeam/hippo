@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('cardsController', ['$scope', 'RESTResource', function($scope, resource) {
+  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', function($scope, resource, copy) {
     var Card = resource('cards');
 
     $scope.errors = [];
@@ -14,9 +14,10 @@ module.exports = function(app) {
       });
     };
 
-    $scope.createNewCard = function() {
-      var newCard = $scope.newCard;
-      $scope.newCard = null;
+    $scope.createNewCard = function(card) {
+      var newCard = copy(card);
+      card.personName = '';
+      card.personPic = '';
       $scope.cards.push(newCard);
       Card.create(newCard, function(err, data) {
         if(err) return $scope.errors.push({msg: 'could not save new card' + newCard.personName});
@@ -38,6 +39,20 @@ module.exports = function(app) {
       Card.save(card, function(err, data) {
         if(err) $scope.errors.push({msg: 'could not update card'});
       });
+    };
+
+    $scope.toggleEdit = function(card) {
+      if(card.editing) {
+        card.personName = card.personNameBackup;
+        card.personPic = card.personPicBackup;
+        card.personNameBackup = undefined;
+        card.personPicBackup = undefined;
+        card.editing = false;
+      } else {
+        card.personNameBackup = card.personName;
+        card.personPicBackup = card.personPic;
+        card.editing = true;
+      }
     };
 
     $scope.clearErrors = function() {

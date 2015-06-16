@@ -25,7 +25,7 @@ require('./routes/users_routes.js' )(usersRouter           );
 require('./routes/oauth2_routes.js')(oauth2Router, passport);
 
 // Assign Routers
-app.use(cardsRouter );
+app.use('/api', cardsRouter);
 app.use(oauth2Router);
 app.use(usersRouter );
 

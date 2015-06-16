@@ -5,8 +5,10 @@ require('angular/angular');
 var hippoApp = angular.module('hippoApp', []);
 //services
 require('./services/rest_resource')(hippoApp);
+require('./services/copy')(hippoApp);
 
 //controllers
 require('./cards/controllers/cards_controller')(hippoApp);
 
 //directives
+require('./cards/directives/card_form_directive')(hippoApp);
