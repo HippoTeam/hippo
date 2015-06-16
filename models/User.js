@@ -1,5 +1,6 @@
 'use strict';
 
+var eat      = require('eat'     );
 var mongoose = require('mongoose');
 
 var UserSchema = mongoose.Schema({
@@ -17,7 +18,7 @@ UserSchema.methods.generateToken = function generateToken(callback) {
       return callback(err, null);
     }
 
-    eat.encode({eat: newEat}, process.env.AUTH_SECRET, function(err, token) {
+    eat.encode({eat: user.eat}, process.env.AUTH_SECRET, function(err, token) {
       if (err) {
         console.log("Error generating token. Error: ", err);
         return callback(err, null);
@@ -28,7 +29,7 @@ UserSchema.methods.generateToken = function generateToken(callback) {
   });
 };
 
-UserSchems.methods.invalidateToken = function invalidateToken(callback) {
+UserSchema.methods.invalidateToken = function invalidateToken(callback) {
   this.eat = null;
   this.save(function(err, user) {
     if (err) {

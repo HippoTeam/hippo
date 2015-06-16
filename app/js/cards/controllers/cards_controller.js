@@ -1,11 +1,16 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('cardsController', ['$scope', '$http', function($scope, $http) {
+  app.controller('cardsController', ['$scope', '$http', '$location', 'auth', function($scope, $http, $location, auth) {
     $scope.errors = [];
     $scope.cards = [];
 
     $scope.getAll = function() {
+
+      if (getTokenParam) {
+        auth.setEat(getTokenParam);
+      }
+
       $http.get('/cards')
         .success(function(data) {
           $scope.cards = data;
@@ -62,6 +67,12 @@ module.exports = function(app) {
       //   return 'red';
       // }
     };
+
+    function getTokenParam(locStr) {
+      var locArr = locStr.split("/");
+
+      return locArr[locArr.length -1];
+    }
 
   }]);
 };

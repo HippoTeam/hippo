@@ -142,7 +142,6 @@ module.exports = function(grunt) {
   });
 
   // Registered Tasks
-  grunt.registerTask('foreman',   [                                                   ]);
   grunt.registerTask('build:dev', ['jshint:client', 'webpack:client', 'copy:html'     ]);
   grunt.registerTask('karmatest', ['jshint:karma', 'webpack:karma_test', 'karma:test' ]);
   grunt.registerTask('mocharun',  ['jshint:dev', 'mochaTest'                          ]);
