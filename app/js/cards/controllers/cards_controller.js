@@ -1,54 +1,62 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('cardsController', ['$scope', '$http', '$location', 'auth', function($scope, $http, $location, auth) {
+
+  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
+    var Card = resource('cards');
+
     $scope.errors = [];
     $scope.cards = [];
 
     $scope.getAll = function() {
-
       if (getTokenParam) {
         auth.setEat(getTokenParam);
       }
 
-      $http.get('/cards')
-        .success(function(data) {
-          $scope.cards = data;
-        })
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'error retrieving cards'});
-        });
+      Card.getAll(function(err, data) {
+        if(err) return $scope.errors.push({msg: 'error retrieving cards'});
+        $scope.cards = data;
+      });
     };
 
-    $scope.createNewCard = function() {
-      $http.post('/cards', $scope.newCard)
-        .success(function(data) {
-          $scope.cards.push(data);
-          $scope.newCard = null;
-        })
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not create new card'});
-        });
+    $scope.createNewCard = function(card) {
+      var newCard = copy(card);
+      card = empty(card);
+      $scope.cards.push(newCard);
+      Card.create(newCard, function(err, data) {
+        if(err) return $scope.errors.push({msg: 'could not save new card' + newCard.personName});
+        $scope.cards.splice($scope.cards.indexOf(newCard), 1, data);
+      });
     };
 
     $scope.removeCard = function(card) {
       $scope.cards.splice($scope.cards.indexOf(card), 1);
-      $http.delete('/cards/' + card._id)
-        .error(function(data) {
-          console.log(data);
+      Card.remove(card, function(err) {
+        if(err) {
           $scope.errors.push({msg: 'could not remove card: ' + card.personName});
-        });
+        }
+      });
     };
 
     $scope.saveCard = function(card) {
       card.editing = false;
-      $http.put('/api/cards/' + card._id, card)
-        .error(function(data) {
-          console.log(data);
-          $scope.errors.push({msg: 'could not update card'});
-        });
+      Card.save(card, function(err, data) {
+        if(err) $scope.errors.push({msg: 'could not update card'});
+      });
+    };
+
+    $scope.toggleEdit = function(card) {
+      if(card.editing) {
+        card.personName = card.personNameBackup;
+        card.personPic = card.personPicBackup;
+        card.personNameBackup = undefined;
+        card.personPicBackup = undefined;
+        card.editing = false;
+      } else {
+        card.personNameBackup = card.personName;
+        card.personPicBackup = card.personPic;
+        card.editing = true;
+      }
     };
 
     $scope.clearErrors = function() {

@@ -25,12 +25,14 @@ require('./routes/users_routes.js' )(usersRouter           );
 require('./routes/oauth2_routes.js')(oauth2Router, passport);
 
 // Assign Routers
-app.use(cardsRouter );
+app.use(cardsRouter);
 app.use(oauth2Router);
 app.use(usersRouter );
 
 // Load static assets
 app.use(express.static(__dirname + '/build'));
+app.use(express.static('assets'));
+app.use('/css', express.static(__dirname + '/node_modules/angular-material'));
 
 // Start Server (default port: 3000)
 app.listen(process.env.PORT || 3000, function() {
