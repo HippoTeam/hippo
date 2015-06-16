@@ -9,4 +9,34 @@ var UserSchema = mongoose.Schema({
   friends:      { type: Array                               }
 });
 
+UserSchema.methods.generateToken = function generateToken(callback) {
+  this.eat   = Date.now();
+  this.save(function(err, user) {
+    if (err) {
+      console.log('Error saving new eat in user. Error: ', err);
+      return callback(err, null);
+    }
+
+    eat.encode({eat: newEat}, process.env.AUTH_SECRET, function(err, token) {
+      if (err) {
+        console.log("Error generating token. Error: ", err);
+        return callback(err, null);
+      }
+
+      callback(null, token);
+    });
+  });
+};
+
+UserSchems.methods.invalidateToken = function invalidateToken(callback) {
+  this.eat = null;
+  this.save(function(err, user) {
+    if (err) {
+      console.log('Could not invalidate token. Error: ', err);
+      return callback(err, null);
+    }
+    callback(null, user);
+  })
+}
+
 module.exports = mongoose.model('User', UserSchema);
