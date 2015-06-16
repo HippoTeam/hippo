@@ -18,7 +18,6 @@ module.exports = function(app) {
       Card.getAll(function(err, data) {
         if(err) return $scope.errors.push({msg: 'error retrieving cards'});
         $scope.cards = data;
-        console.log(data);
       });
     };
 
