@@ -32,6 +32,7 @@ describe('cards controller', function() {
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
+      $httpBackend.resetExpectations();
     });
 
     it('should make a get request on index', function() {
@@ -51,13 +52,13 @@ describe('cards controller', function() {
     });
 
     it('should be able to save a new card', function() {
-      $scope.newCard = {personName: 'test card'};
+      var newCard = {personName: 'test card'};
       $httpBackend.expectPOST('/cards').respond(200, {_id: '2', personName: 'test card'});
-      $scope.createNewCard();
+      $scope.createNewCard(newCard);
       $httpBackend.flush();
       expect($scope.cards[0].personName).toBe('test card');
       expect($scope.cards[0]._id).toBe('2');
-      expect($scope.newCard).toBe(null);
+      expect($scope.errors.length).toBe(0);
     });
 
     it('should delete a card', function() {
