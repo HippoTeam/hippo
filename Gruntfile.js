@@ -63,23 +63,57 @@ module.exports = function(grunt) {
     },
 
     jshint: {
-      client: {
-        src: ['./app/js/**/*.js'],
-        options: {
-          globals: {
-            angular: true
-          }
-        }
-      },
       server: {
         src: ['Gruntfile.js',
               '/lib/**/*.js',
               '/models/**/*.js',
               '/routes/**/*.js',
-              '/test/**/*.js',
+              '/test/*test.js',
               '*.js'
              ],
+        options: {
+          globals: {
+            describe: true,
+            it: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
       },
+
+      client: {
+        src: ['app/**/*.js',
+              'test/client/*test.js'
+              ],
+        options: {
+          globals: {
+            angular: true,
+            describe: true,
+            it: true,
+            before: true,
+            after: true
+          }
+        }
+      },
+
+      karma: {
+        src: ['test/karma_tests/*test.js'],
+        options: {
+          globals: {
+            angular: true,
+            describe: true,
+            it: true,
+            expect: true,
+            before: true,
+            after: true,
+            beforeEach: true,
+            afterEach: true
+          }
+        }
+      },
+
       options: {
         // Base Options
         eqeqeq: true,
@@ -89,6 +123,7 @@ module.exports = function(grunt) {
         node: true
       }
     },
+
     mochaTest: {
       test: {
         options: {
@@ -107,10 +142,11 @@ module.exports = function(grunt) {
   });
 
   // Registered Tasks
-  grunt.registerTask('foreman',    [                                      ]);
-  grunt.registerTask('build:dev',  ['webpack:client', 'copy:html'         ]);
-  grunt.registerTask('karmatest',  ['webpack:karma_test', 'karma:test'    ]);
-  grunt.registerTask('test',       ['jshint', 'karmatest', 'mochaTest'    ]);
-  grunt.registerTask('build',      ['build:dev'                           ]);
-  grunt.registerTask('default',    ['test'                                ]);
+  grunt.registerTask('foreman',   [                                                   ]);
+  grunt.registerTask('build:dev', ['jshint:client', 'webpack:client', 'copy:html'     ]);
+  grunt.registerTask('karmatest', ['jshint:karma', 'webpack:karma_test', 'karma:test' ]);
+  grunt.registerTask('mocharun',  ['jshint:dev', 'mochaTest'                          ]);
+  grunt.registerTask('test',      ['jshint', 'karmatest', 'mochaTest'                 ]);
+  grunt.registerTask('build',     ['build:dev'                                        ]);
+  grunt.registerTask('default',   ['test'                                             ]);
 };
