@@ -18,25 +18,25 @@ module.exports = function(app) {
     return function(resourceName) {
       return {
         getAll: function(callback) {
-          $http.get('/api/' + resourceName)
+          $http.get('/' + resourceName)
             .success(handleSuccess(callback))
             .error(handleError(callback));
         },
 
         create: function(resourceData, callback) {
-          $http.post('/api/' + resourceName, resourceData)
+          $http.post('/' + resourceName, resourceData)
             .success(handleSuccess(callback))
             .error(handleError(callback));
         },
 
         save: function(resourceData, callback) {
-          $http.put('/api/' + resourceName + '/' + resourceData._id, resourceData)
+          $http.put('/' + resourceName + '/' + resourceData._id, resourceData)
             .success(handleSuccess(callback))
             .error(handleError(callback));
         },
 
         remove: function(resourceData, callback) {
-          $http.delete('/api/' + resourceName + '/' + resourceData._id)
+          $http.delete('/' + resourceName + '/' + resourceData._id)
             .success(handleSuccess(callback))
             .error(handleError(callback));
         }
