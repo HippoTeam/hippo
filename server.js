@@ -31,6 +31,7 @@ app.use(usersRouter );
 
 // Load static assets
 app.use(express.static(__dirname + '/build'));
+app.use(express.static('assets'));
 
 // Start Server (default port: 3000)
 app.listen(process.env.PORT || 3000, function() {
