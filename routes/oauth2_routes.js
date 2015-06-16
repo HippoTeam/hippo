@@ -13,7 +13,6 @@ module.exports = function(app, passport) {
           passport.authenticate('facebook', { session:         false,
                                               successRedirect: '/',
                                               failureRedirect: '/#/login' }));
-
 }
 
 
