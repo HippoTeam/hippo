@@ -3,6 +3,8 @@
 module.exports = function(app) {
 
   app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
+    if (!auth.isSignedIn()) { $location.path('/login'); }
+
     var Card = resource('cards');
 
     $scope.errors = [];
