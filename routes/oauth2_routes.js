@@ -17,7 +17,6 @@ module.exports = function(app, passport) {
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook',
       { session:         false,
-        // successRedirect: ('/#/learn/?token=' + req.header.token),
         failureRedirect: '/#/login'
       }),
     successMiddleware
