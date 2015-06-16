@@ -17,7 +17,9 @@ module.exports = function(router) {
       var returnObj = {};
       returnObj.pic_url = array[0].personPic;
       returnObj.answer = array[0].personName;
-      returnObj.names = randomArray(array, 4);
+      returnObj._id = array[0]._id;
+      var namesArray = array.map(function(obj) {return obj.personName;})
+      returnObj.names = randomArray(namesArray, 4);
       res.json(returnObj);
     });
   });
