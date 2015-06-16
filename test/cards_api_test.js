@@ -46,7 +46,7 @@ describe('cards REST api', function() {
       expect(err).to.eql(null);
       expect(typeof res.body).to.eql('object');
       expect(Array.isArray(res.body)).to.eql(true);
-
+      expect(res.body.length).to.eql(4);
       done();
     });
   });
