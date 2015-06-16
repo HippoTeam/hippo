@@ -6,6 +6,7 @@ var hippoApp = angular.module('hippoApp', []);
 //services
 require('./services/rest_resource')(hippoApp);
 require('./services/copy')(hippoApp);
+require('./services/set_empty')(hippoApp);
 
 //controllers
 require('./cards/controllers/cards_controller')(hippoApp);

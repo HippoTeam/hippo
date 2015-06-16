@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', function($scope, resource, copy) {
+  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', function($scope, resource, copy, empty) {
     var Card = resource('cards');
 
     $scope.errors = [];
@@ -16,8 +16,7 @@ module.exports = function(app) {
 
     $scope.createNewCard = function(card) {
       var newCard = copy(card);
-      card.personName = '';
-      card.personPic = '';
+      card = empty(card);
       $scope.cards.push(newCard);
       Card.create(newCard, function(err, data) {
         if(err) return $scope.errors.push({msg: 'could not save new card' + newCard.personName});
