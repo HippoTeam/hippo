@@ -55,10 +55,26 @@ describe('cards REST api', function() {
   describe('needs at least 4 existing cards to work with' , function() {
     beforeEach(function(done) {
       var count = 0;
-      var testCard1 = new Card({personPic: 'pic1', personName:'name1'});
-      var testCard2 = new Card({personPic: 'pic2', personName:'name2'});
-      var testCard3 = new Card({personPic: 'pic3', personName:'name3'});
-      var testCard4 = new Card({personPic: 'pic4', personName:'name4'});
+      var testCard1 = new Card({
+        personPic: 'pic1',
+        personName:'name1',
+        userId: testUser.facebook_id
+      });
+      var testCard2 = new Card({
+        personPic: 'pic2',
+        personName:'name2',
+        userId: testUser.facebook_id
+      });
+      var testCard3 = new Card({
+        personPic: 'pic3',
+        personName:'name3',
+        userId: testUser.facebook_id
+      });
+      var testCard4 = new Card({
+        personPic: 'pic4',
+        personName:'name4',
+        userId: testUser.facebook_id
+      });
       testCard1.save(callbackFun);
       testCard2.save(callbackFun);
       testCard3.save(callbackFun);
