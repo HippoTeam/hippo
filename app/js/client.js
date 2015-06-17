@@ -33,10 +33,11 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
       controller:  'cardsController'
     })
     .when('/login', {
+      templateUrl: 'templates/views/sign_in.html',
+      controller:  'cardsController'
     })
     .when('/', {
       redirectTo: '/login'
     })
     .otherwise({ redirectTo: '/login' });
 }]);
-
