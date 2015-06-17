@@ -18,6 +18,9 @@
   	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 	}
+  .sidebar-button {
+    text-align: left;
+  }
   .md-button {
     text-transform: none;
   }
@@ -50,15 +53,12 @@
   <md-sidenav md-component-id="left" class="md-sidenav-left">
     <md-list>
       <md-list-item>
-        <md-button data-ng-href="/auth/facebook">
-            Login to Facebook
+        <md-button class="sidebar-button" data-ng-if="isSignedOut()" data-ng-href="/auth/facebook">
+          Login to Facebook
         </md-button>
-      </md-list-item>
-      <md-list-item>
-        <md-button data-ng-click="logout()">
-            Logout
+        <md-button class="sidebar-button" data-ng-if="isSignedIn()" data-ng-click="logout()">
+          Logout
         </md-button>
-
       </md-list-item>
       <md-list-item>
         <md-button>
