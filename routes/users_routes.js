@@ -1,6 +1,7 @@
 'use strict';
 
 var bodyparser = require('body-parser'      );
+var eatAuth    = require('../lib/eat_auth.js')(process.env.AUTH_SECRET);
 var User       = require('../models/User.js');
 
 
@@ -8,7 +9,7 @@ module.exports = function(router) {
   router.use(bodyparser.json());
 
   // R
-  router.get('/users/:id', function(req, res) {
+  router.get('/users/:id', eatAuth, function(req, res) {
     // TODO: REFACTOR THIS TO REQUIRE AUTH
     User.findOne({_id: req.params.id}, function(err, user) {
       if (err) {
