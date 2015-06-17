@@ -14,8 +14,13 @@ module.exports = function(app) {
     };
   };
 
-  app.factory('RESTResource', ['$http', function($http) {
+  app.factory('RESTResource', ['$http', 'auth', function($http, auth) {
     return function(resourceName) {
+
+      // Set header with cookie
+      var eat = auth.getEat();
+      $http.defaults.headers.common.eat = eat;
+
       return {
         getAll: function(callback) {
           $http.get('/' + resourceName)
