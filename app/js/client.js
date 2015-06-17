@@ -32,6 +32,10 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
       templateUrl: 'templates/views/card_view.html',
       controller:  'cardsController'
     })
+    .when('/cards2', {
+      templateUrl: 'templates/views/card_view2.html',
+      controller:  'cardsController'
+    })
     .when('/learn/:token', {
       templateUrl: 'templates/views/card_view.html',
       controller:  'cardsController'
