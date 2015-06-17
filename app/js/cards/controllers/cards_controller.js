@@ -19,6 +19,14 @@ module.exports = function(app) {
     $scope.cards   = [];
     $scope.guesses = [];
 
+    $scope.redirectCards = function() {
+      $location.path('/cards');
+    };
+
+    $scope.redirectCards2 = function() {
+      $location.path('/cards2');
+    };
+
     $scope.getAll = function() {
       Card.getAll(function(err, data) {
         if (err && err.reset) { return auth.resetEat(); }
@@ -123,7 +131,6 @@ module.exports = function(app) {
         if (err && err.reset) { return auth.resetEat(); }
         if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
       });
-      $scope.getAll();
     }
 
     // Add name to guesses array, if not already in

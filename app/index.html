@@ -29,6 +29,18 @@
   .md-toast.correct {
       background-color: green;
   }
+  /* slide in from the right */
+  @keyframes slideInRight {
+      from    { transform:translateX(100%); }
+      to      { transform: translateX(0); }
+  }
+
+  @keyframes slideOutLeft {
+    to      { transform: translateX(-100%); }
+  }
+  .page.ng-enter        { animation:slideInRight 0.5s both ease-in; }
+  .page.ng-leave        { animation:slideOutLeft 0.5s both ease-in; }
+
   </style>
   <title>Client Side</title>
 </head>
@@ -69,7 +81,7 @@
     </div>
   </md-toolbar>
 </div>
-<main data-ng-view></main>
+<main class= "page" data-ng-view></main>
 
 <script src="bundle.js"></script>
 </body>
