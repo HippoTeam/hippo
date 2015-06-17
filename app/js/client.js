@@ -28,15 +28,18 @@ require('./cards/directives/card_form_directive')(hippoApp);
 // Custom View Routes
 hippoApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
+    .when('/cards', {
+      templateUrl: 'templates/views/card_view.html',
+      controller:  'cardsController'
+    })
     .when('/learn/:token', {
       templateUrl: 'templates/views/card_view.html',
       controller:  'cardsController'
     })
     .when('/login', {
+      templateUrl: 'templates/views/sign_in.html'
     })
-    .when('/', {
+    .otherwise({
       redirectTo: '/login'
-    })
-    .otherwise({ redirectTo: '/login' });
+    });
 }]);
-

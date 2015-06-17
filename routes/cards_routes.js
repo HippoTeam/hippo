@@ -17,7 +17,7 @@ module.exports = function(router) {
     Card.find({}, function(err, data) {
       if (err) { handleError(err, res, 'internal server err'); }
 
-      var array = randomArray(data, 4)
+      var array = randomArray(data, 4);
       var returnObj = {};
       returnObj.pic_url = array[0].personPic;
       returnObj.answer = array[0].personName;
