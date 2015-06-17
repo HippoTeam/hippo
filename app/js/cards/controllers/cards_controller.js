@@ -2,10 +2,9 @@
 
 var _ = require('lodash');
 
-
 module.exports = function(app) {
 
-  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
+  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', '$mdToast', '$animate', function($scope, resource, copy, empty, $location, auth, $mdToast, $animate) {
     var currPath = $location.path();
     // If not signed in & token in params, set eat
     if (!auth.isSignedIn() && currPath && getTokenParam(currPath) ) {
@@ -22,7 +21,9 @@ module.exports = function(app) {
 
     $scope.getAll = function() {
       Card.getAll(function(err, data) {
-        if(err) return $scope.errors.push({msg: 'error retrieving cards'});
+        if (err && err.reset) { return auth.resetEat(); }
+        if(err) { return $scope.errors.push({msg: 'error retrieving cards'}); }
+
         $scope.cards   = data;
         $scope.guesses = [];
       });
@@ -78,6 +79,11 @@ module.exports = function(app) {
       updateGuesses(guess);
 
       if (guess === $scope.cards.answer) {
+            $mdToast.show({
+              template: '<md-toast class="md-toast correct">' + 'Correct!!' + '</md-toast>',
+              hideDelay: 1000,
+              position: 'bottom left'
+              });
         if($event.target.nextSibling.style){
           $event.target.style.backgroundColor = 'green';
         } else {
@@ -85,8 +91,14 @@ module.exports = function(app) {
         }
         // send data to server & go to next card
         submitAndNext($scope.guesses);
-
       } else {
+
+        $mdToast.show({
+          template: '<md-toast class="md-toast incorrect">' + 'Wrong, Try Again!' + '</md-toast>',
+          hideDelay: 1000,
+          position: 'bottom left'
+        });
+
         if($event.target.nextSibling.style) {
           $event.target.style.backgroundColor = 'lightcoral';
         } else {
@@ -94,6 +106,7 @@ module.exports = function(app) {
         }
       }
     };
+
 
     $scope.isFriendStyle = function(card) {
       // if(card.button) {
@@ -107,7 +120,8 @@ module.exports = function(app) {
       var guessesObj = {_id:     $scope.cards._id,
                         guesses: $scope.guesses};
       Card.update(guessesObj, function(err, data) {
-        if (err) {$scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
+        if (err && err.reset) { return auth.resetEat(); }
+        if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
       });
       $scope.getAll();
     }

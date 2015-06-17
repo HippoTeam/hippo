@@ -2,9 +2,9 @@
 
 module.exports = function(app) {
   var handleError = function(callback) {
-    return function(data) {
-      console.log(data);
-      callback(data);
+    return function(err) {
+      console.log(err);
+      callback(err, null);
     };
   };
 

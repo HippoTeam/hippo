@@ -5,7 +5,7 @@ var bodyparser  = require('body-parser'               );
 var eatAuth     = require('../lib/eat_auth.js')(process.env.AUTH_SECRET);
 var randomArray = require('../lib/randomArrayElements');
 
-function handleError(err, userMsg, msg) {
+function handleError(err, res, userMsg, msg) {
   msg ? console.log(msg, err) : console.log(err);
   res.status(500).json({error: true, msg: userMsg});
 }
@@ -15,9 +15,9 @@ module.exports = function(router) {
 
   router.get('/cards', eatAuth, function(req, res) {
     Card.find({}, function(err, data) {
-      if (err) { handleError(err, 'internal server err'); }
+      if (err) { return handleError(err, res, 'internal server err'); }
 
-      var array = randomArray(data, 4)
+      var array = randomArray(data, 4);
       var returnObj = {};
       returnObj.pic_url = array[0].personPic;
       returnObj.answer = array[0].personName;
@@ -34,11 +34,11 @@ module.exports = function(router) {
     var addGuesses = req.body.guesses;
 
     Card.findOne({_id: updateInfo._id}, function(err, card) {
-      if (err) { handleError(err, 'internal server err', 'Error finding card. Error: '); }
+      if (err) { return handleError(err, 'internal server err', 'Error finding card. Error: '); }
       addGuesses.forEach(function(elem) { card.guesses.push(elem) });
 
       card.save(function (err, updCard) {
-        if (err) { handleError(error, 'internal server err', 'Error updating card. Error: '); }
+        if (err) { return handleError(error, 'internal server err', 'Error updating card. Error: '); }
 
         res.json({error: false, msg: 'card updated'});
       });
@@ -48,7 +48,7 @@ module.exports = function(router) {
   router.post('/cards', eatAuth, function(req, res) {
     var newCard = new Card(req.body);
     newCard.save(function(err, data) {
-      if (err) { handleError(err, 'internal server err'); }
+      if (err) { return handleError(err, res, 'internal server err'); }
 
       res.json(data);
     });
@@ -59,7 +59,7 @@ module.exports = function(router) {
     delete updatedCard._id;
 
     Card.update({'_id': req.params.id}, updatedCard, function(err, data) {
-      if (err) { handleError(err, 'internal server err'); }
+      if (err) { return handleError(err, res, 'internal server err'); }
 
       res.json({msg: 'success'});
     });
@@ -67,7 +67,7 @@ module.exports = function(router) {
 
   router.delete('/cards/:id', eatAuth, function(req, res) {
     Card.remove({'_id': req.params.id}, function(err, data) {
-      if (err) { handleError(err, 'internal server err'); }
+      if (err) { return handleError(err, res, 'internal server err'); }
 
       res.json({msg: 'success'});
     });
