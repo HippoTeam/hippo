@@ -3,8 +3,6 @@
 module.exports = function(app) {
 
   app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
-    if (!auth.isSignedIn()) { $location.path('/login'); }
-
     var Card = resource('cards');
 
     $scope.errors = [];
@@ -12,10 +10,17 @@ module.exports = function(app) {
     $scope.guesses = [];
 
     $scope.getAll = function() {
-      if (getTokenParam) {
-        auth.setEat(getTokenParam);
+      var currPath = $location.path();
+
+      // If not signed in & token in params, set eat
+      if (!auth.isSignedIn() && currPath && getTokenParam(currPath)) {
+        auth.setEat(getTokenParam(currPath));
       }
 
+      // If still not signed in, redirect
+      if (!auth.isSignedIn()) { $location.path('/login'); }
+
+      // Else show cards
       Card.getAll(function(err, data) {
         if(err) return $scope.errors.push({msg: 'error retrieving cards'});
         $scope.cards = data;
@@ -105,8 +110,9 @@ module.exports = function(app) {
     }
 
     function getTokenParam(locStr) {
-      var locArr = locStr.split("/");
-      return locArr[locArr.length -1];
+      var locArr = locStr.split('/');
+      // If no param on the end, return false, else return the param
+      return (locArr.length < 3 ? false : locArr[locArr.length -1]);
     }
 
   }]);

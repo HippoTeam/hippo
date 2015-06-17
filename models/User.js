@@ -4,9 +4,9 @@ var eat      = require('eat'     );
 var mongoose = require('mongoose');
 
 var UserSchema = mongoose.Schema({
-  eat:            { type: Number                               },
-  access_token:   { type: String                               },
-  facebook_id:    { type: String, required: true, unique: true },
+  eat:          { type: Number                              },
+  access_token: {type: String                               },
+  facebook_id:  { type: String, required: true              },
   fb_last_update: { type: Date,                                }
 });
 
@@ -18,7 +18,7 @@ UserSchema.methods.generateToken = function generateToken(callback) {
       return callback(err, null);
     }
 
-    eat.encode({eat: user.eat}, process.env.AUTH_SECRET, function(err, token) {
+    eat.encode(user.eat, process.env.AUTH_SECRET, function(err, token) {
       if (err) {
         console.log("Error generating token. Error: ", err);
         return callback(err, null);
