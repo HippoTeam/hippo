@@ -9,7 +9,7 @@ module.exports = function(app) {
         return !!($cookies.get('eat') && $cookies.get('eat').length);
       },
 
-      getEat: function() {
+      getEat: function getEat() {
         // Load cookies for requests
         return $cookies.get('eat');
       },

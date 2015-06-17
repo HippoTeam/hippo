@@ -3,7 +3,6 @@
 module.exports = function(app) {
 
   app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
-
     var Card = resource('cards');
 
     $scope.errors = [];
@@ -97,7 +96,6 @@ module.exports = function(app) {
     };
 
     function getTokenParam(locStr) {
-      console.log("LOCATION STRING TO SPLIT IS: ", locStr);
       var locArr = locStr.split('/');
 
       // If no param on the end, return false, else return the param
