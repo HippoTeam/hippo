@@ -22,7 +22,7 @@ module.exports = function(app) {
 
     $scope.getAll = function() {
       Card.getAll(function(err, data) {
-        reLoginOnBadEat(err);
+        if (err && err.reset) { return auth.resetEat(); }
         if(err) { return $scope.errors.push({msg: 'error retrieving cards'}); }
 
         $scope.cards   = data;
@@ -108,16 +108,11 @@ module.exports = function(app) {
       // }
     };
 
-    // token error sends reset:true to trigger re-login
-    function reLoginOnBadEat(err) {
-      if (err && err.reset) { return auth.resetEat(); }
-    }
-
     function submitAndNext(guesses) {
       var guessesObj = {_id:     $scope.cards._id,
                         guesses: $scope.guesses};
       Card.update(guessesObj, function(err, data) {
-        reLoginOnBadEat(err);
+        if (err && err.reset) { return auth.resetEat(); }
         if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
       });
       $scope.getAll();
