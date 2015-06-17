@@ -31,22 +31,18 @@ module.exports = function(router) {
 
   router.patch('/cards', eatAuth, function(req, res) {
     var updateInfo = req.body;  //  {_id(card):..., guesses: ...}
-    console.log(updateInfo.guesses);
+    var addGuesses = req.body.guesses;
 
     Card.findOne({_id: updateInfo._id}, function(err, card) {
       if (err) { handleError(err, 'internal server err', 'Error finding card. Error: '); }
-      console.log("FOUND THIS CARD FROM ID: ", card);
-      console.log("GUESSES BEFORE UPDATE ARE: ", card.guesses);
+      addGuesses.forEach(function(elem) { card.guesses.push(elem) });
 
-      var combinedGuesses = card.guesses.push(updateInfo.guesses);
-      Card.update({_id: card._id}, combinedGuesses, function(error, updCard) {
-        console.log("GUESSES AFTER UPDATE ARE: ", updCard.guesses);
+      card.save(function (err, updCard) {
         if (err) { handleError(error, 'internal server err', 'Error updating card. Error: '); }
 
         res.json({error: false, msg: 'card updated'});
       });
     });
-
   });
 
   router.post('/cards', eatAuth, function(req, res) {

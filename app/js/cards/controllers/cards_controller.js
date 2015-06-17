@@ -75,11 +75,9 @@ module.exports = function(app) {
 
     $scope.isFriend = function($event) {
       var guess = $event.target.innerText;
-      console.log("GUESS TO BE ADDED IS: ", guess);
       updateGuesses(guess);
 
       if (guess === $scope.cards.answer) {
-        console.log("TARGET IS: ", $event.target);
         if($event.target.nextSibling.style){
           $event.target.style.backgroundColor = 'green';
         } else {
@@ -89,7 +87,6 @@ module.exports = function(app) {
         submitAndNext($scope.guesses);
 
       } else {
-        console.log("TARGET IS: ", $event.target);
         if($event.target.nextSibling.style) {
           $event.target.style.backgroundColor = 'lightcoral';
         } else {
@@ -115,7 +112,7 @@ module.exports = function(app) {
       $scope.getAll();
     }
 
-    // Add name to array, if not already in array
+    // Add name to guesses array, if not already in
     function updateGuesses(name) {
       if( !_.includes($scope.guesses, name) ) { $scope.guesses.push(name); }
     }
