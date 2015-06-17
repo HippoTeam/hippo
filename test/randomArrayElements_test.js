@@ -16,10 +16,9 @@ describe('randomArrayElements function', function() {
     expect(Array.isArray(randomArray)).to.eql(true);
   });
 
-  it('should return original array is num is too high', function() {
+  it('should return the original array randomized if num is too high', function() {
     var randomArray = randomArrayElements(array, 15);
     expect(randomArray.length).to.eql(10);
-    expect(randomArray[2]).to.eql(2);
     expect(Array.isArray(randomArray)).to.eql(true);
   });
 });

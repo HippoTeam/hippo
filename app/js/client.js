@@ -27,17 +27,22 @@ require('./cards/directives/card_form_directive')(hippoApp);
 
 // Custom View Routes
 hippoApp.config(['$routeProvider', function($routeProvider) {
+  var $cookies;
+  angular.injector(['ngCookies']).invoke(function(_$cookies_) {
+    $cookies = _$cookies_;
+  });
   $routeProvider
-    .when('/learn/:token', {
+    .when('/cards', {
       templateUrl: 'templates/views/card_view.html',
       controller:  'cardsController'
     })
+    .when('/learn/:token', {
+      redirectTo: '/cards'
+    })
     .when('/login', {
-      templateUrl: 'templates/views/sign_in.html',
-      controller:  'cardsController'
+      templateUrl: 'templates/views/sign_in.html'
     })
-    .when('/', {
+    .otherwise({
       redirectTo: '/login'
-    })
-    .otherwise({ redirectTo: '/login' });
+    });
 }]);

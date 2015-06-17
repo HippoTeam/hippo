@@ -17,6 +17,15 @@
   	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
   	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
 	}
+  .md-button {
+    text-transform: none;
+  }
+  .md-toast.incorrect {
+    background-color: red;
+  }
+  .md-toast.correct {
+    background-color: green;
+  }
   </style>
   <title>Client Side</title>
 </head>
@@ -58,7 +67,22 @@
   </md-toolbar>
 </div>
 <main data-ng-view></main>
-
+<section data-ng-controller="cardsController" data-ng-init="getAll()">
+  <md-content layout-padding>
+    <md-card layout-align="center center" md-swipe-left="getAll()"  md-swipe-right="getAll()">
+     <img src={{cards.pic_url}} class="circular md-avatar" alt="profile pic">
+     <md-card-content>
+       <md-button data-ng-click="getAll()">NEXT</md-button>
+     </md-card-content>
+     <div class="md-actions" layout="row">
+       <md-button data-ng-click="isFriend($event)">{{cards.names[0]}}</md-button>
+       <md-button data-ng-click="isFriend($event)">{{cards.names[1]}}</md-button>
+       <md-button data-ng-click="isFriend($event)">{{cards.names[2]}}</md-button>
+       <md-button data-ng-click="isFriend($event)">{{cards.names[3]}}</md-button>
+     </div>
+    </md-card>
+  </md-content>
+</section>
   <script src="bundle.js"></script>
 </body>
 </html>

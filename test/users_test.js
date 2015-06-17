@@ -2,6 +2,7 @@
 
 var chai     = require('chai'              );
 var chaihttp = require('chai-http'         );
+var createUserAndEat = require('./support/create_test_user.js');
 var envVar   = require('./test_env_vars.js');
 var expect   = chai.expect;
 var mongoose = require('mongoose'          );
@@ -19,11 +20,14 @@ require('../server.js');
 describe('User_Routes', function() {
   describe('with valid authentication', function() {
     describe('GET to /user/:id', function() {
-      var newUser;
+      // var newUser;
+      var testUser;
+      var testToken;
+
       before(function(done) {
-        User.create({facebook_id: '1234abcd'}, function(err, user) {
-          expect(err).to.eq(null);
-          newUser = user;
+        createUserAndEat(function(user, token) {
+          testUser  = user;
+          testToken = token;
           done();
         });
       });
@@ -33,10 +37,11 @@ describe('User_Routes', function() {
 
       it('returns the user matching the id', function(done) {
         chai.request('localhost:3000')
-          .get('/users/' + newUser._id)
+          .get('/users/' + testUser._id)
+          .set({eat: testToken})
           .end(function(err, res) {
             expect(err).to.eq(null);
-            expect(res.body.user.facebook_id).to.eq('1234abcd');
+            expect(res.body.user.facebook_id).to.eq('1234');
             done();
           });
       });
