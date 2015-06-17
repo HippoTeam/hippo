@@ -75,7 +75,10 @@ module.exports = function(app) {
     };
 
     $scope.isFriend = function($event) {
-      if ($event.target.innerText === $scope.cards.answer) {
+      var guess = $event.target.innerText;
+      updateGuesses(guess);
+
+      if (guess === $scope.cards.answer) {
             $mdToast.show({
               template: '<md-toast class="md-toast correct">' + 'Correct!!' + '</md-toast>',
               hideDelay: 1000,
@@ -89,11 +92,13 @@ module.exports = function(app) {
         // send data to server & go to next card
         submitAndNext($scope.guesses);
       } else {
+
         $mdToast.show({
           template: '<md-toast class="md-toast incorrect">' + 'Wrong, Try Again!' + '</md-toast>',
           hideDelay: 1000,
           position: 'bottom left'
         });
+
         if($event.target.nextSibling.style) {
           $event.target.style.backgroundColor = 'lightcoral';
         } else {
@@ -121,14 +126,13 @@ module.exports = function(app) {
       $scope.getAll();
     }
 
-    // Add name to array, if not already in array
+    // Add name to guesses array, if not already in
     function updateGuesses(name) {
       if( !_.includes($scope.guesses, name) ) { $scope.guesses.push(name); }
     }
 
     function getTokenParam(locStr) {
       var locArr = locStr.split('/learn/');
-      console.log("TOKEN FROM PARAM: ", locArr);
       // If no param on the end, return false, else return the param
       return (locArr.length < 2 ? false : locArr[locArr.length -1]);
     }
