@@ -7,8 +7,8 @@ require('angular-cookies'                  );
 require('angular-material/angular-material');
 require('angular-route'                    );
 
-
 var hippoApp = angular.module('hippoApp', ['ngRoute', 'ngCookies', 'ngMaterial']);
+
 
 // Services
 require('./shared/auth.js'        )(hippoApp);

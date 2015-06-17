@@ -9,6 +9,7 @@ module.exports = function(app) {
 
     $scope.errors = [];
     $scope.cards = [];
+    $scope.guesses = [];
 
     $scope.getAll = function() {
       if (getTokenParam) {
@@ -67,13 +68,21 @@ module.exports = function(app) {
     };
 
     $scope.isFriend = function($event) {
-      if ($event.target.innerText === $scope.cards.answer) {
+      var guess = $event.target.innerText;
+      updateGuesses(guess);
+
+      if (guess === $scope.cards.answer) {
+        console.log("TARGET IS: ", $event.target);
         if($event.target.nextSibling.style){
           $event.target.style.backgroundColor = 'green';
         } else {
           $event.target.firstElementChild.style.backgroundColor = 'green';
         }
+        // send data to server & go to next card
+        // submitAndNext($scope.guesses);
+
       } else {
+        console.log("TARGET IS: ", $event.target);
         if($event.target.nextSibling.style) {
           $event.target.style.backgroundColor = 'lightcoral';
         } else {
@@ -90,9 +99,13 @@ module.exports = function(app) {
       // }
     };
 
+    // Add name to array, if not already in array
+    function updateGuesses(name) {
+      if(!$scope.guesses.includes(name)) { $scope.guesses.push(name); }
+    }
+
     function getTokenParam(locStr) {
       var locArr = locStr.split("/");
-
       return locArr[locArr.length -1];
     }
 

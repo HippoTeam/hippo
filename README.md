@@ -62,3 +62,12 @@ Response includes two objects:
   }
 }
 ```
+#### `/Cards` Response Data
+```
+Object {
+  pic_url: "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-x…gda__=1445631894_ea7562d7c9972301b2a0eb9b81a4ec33",
+  answer: "Louie Praseuth",
+  _id: "5580c52d3f4742216e2c6ff0",
+  names: ["Alex Zheng", "Louie Praseuth", "Airika Pope", "Grant Potter"]
+}
+```
