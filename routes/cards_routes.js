@@ -14,9 +14,9 @@ module.exports = function(router) {
   router.use(bodyparser.json());
 
   router.get('/cards', eatAuth, function(req, res) {
-    Card.find({}, function(err, data) {
+    Card.find({userId: req.user.facebook_id}, function(err, data) {
       if (err) { handleError(err, res, 'internal server err'); }
-
+      console.log(data);
       var array = randomArray(data, 4);
       var returnObj = {};
       returnObj.pic_url = array[0].personPic;
