@@ -7,7 +7,7 @@ var UserSchema = mongoose.Schema({
   eat:          { type: Number                              },
   access_token: {type: String                               },
   facebook_id:  { type: String, required: true              },
-  friends:      { type: Array                               }
+  fb_last_update: { type: Date,                                }
 });
 
 UserSchema.methods.generateToken = function generateToken(callback) {

@@ -66,8 +66,20 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function(card) {
-      // card.button = true;
+    $scope.isFriend = function($event) {
+      if ($event.target.innerText === $scope.cards.answer) {
+        if($event.target.nextSibling.style){
+          $event.target.style.backgroundColor = 'green';
+        } else {
+          $event.target.firstElementChild.style.backgroundColor = 'green';
+        }
+      } else {
+        if($event.target.nextSibling.style) {
+          $event.target.style.backgroundColor = 'lightcoral';
+        } else {
+          $event.target.firstElementChild.style.backgroundColor = 'lightcoral';
+        }
+      }
     };
 
     $scope.isFriendStyle = function(card) {
