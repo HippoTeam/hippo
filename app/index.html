@@ -52,11 +52,13 @@
   <div layout="row" ng-controller="sidenavController">
   <md-sidenav md-component-id="left" class="md-sidenav-left">
     <md-list>
-      <md-list-item>
-        <md-button class="sidebar-button" data-ng-if="isSignedOut()" data-ng-href="/auth/facebook">
+      <md-list-item data-ng-if="isSignedOut()">
+        <md-button class="sidebar-button" data-ng-href="/auth/facebook">
           Login to Facebook
         </md-button>
-        <md-button class="sidebar-button" data-ng-if="isSignedIn()" data-ng-click="logout()">
+      </md-list-item>
+      <md-list-item data-ng-if="isSignedIn()">
+        <md-button class="sidebar-button" data-ng-click="logout()">
           Logout
         </md-button>
       </md-list-item>
