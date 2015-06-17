@@ -115,15 +115,6 @@ module.exports = function(app) {
       }
     };
 
-
-    $scope.isFriendStyle = function(card) {
-      // if(card.button) {
-      //   return 'green';
-      // } else {
-      //   return 'red';
-      // }
-    };
-
     function submitAndNext(guesses) {
       var guessesObj = {_id:     $scope.cards._id,
                         guesses: $scope.guesses};
