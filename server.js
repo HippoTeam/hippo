@@ -32,7 +32,7 @@ app.use(usersRouter );
 // Load static assets
 var directory = process.env.WEBPACK_DIRECTORY || 'build';
 app.use(express.static(__dirname + '/' + directory));
-app.use(express.static('assets'));
+app.use(express.static(__dirname + '/assets'));
 
 // Start Server (default port: 3000)
 app.listen(process.env.PORT || 3000, function() {
