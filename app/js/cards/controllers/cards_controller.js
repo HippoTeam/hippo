@@ -1,28 +1,30 @@
 'use strict';
 
+var _ = require('lodash');
+
+
 module.exports = function(app) {
 
   app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', function($scope, resource, copy, empty, $location, auth) {
-    var Card = resource('cards');
+    var currPath = $location.path();
+    // If not signed in & token in params, set eat
+    if (!auth.isSignedIn() && currPath && getTokenParam(currPath) ) {
+      auth.setEat( getTokenParam(currPath) );
+    }
+    // If still not signed in, redirect
+    if (!auth.isSignedIn()) { $location.path('/login'); }
 
-    $scope.errors = [];
-    $scope.cards = [];
+
+    var Card = resource('cards');
+    $scope.errors  = [];
+    $scope.cards   = [];
+    $scope.guesses = [];
 
     $scope.getAll = function() {
-      var currPath = $location.path();
-
-      // If not signed in & token in params, set eat
-      if (!auth.isSignedIn() && currPath && getTokenParam(currPath)) {
-        auth.setEat(getTokenParam(currPath));
-      }
-
-      // If still not signed in, redirect
-      if (!auth.isSignedIn()) { $location.path('/login'); }
-
-      // Else show cards
       Card.getAll(function(err, data) {
         if(err) return $scope.errors.push({msg: 'error retrieving cards'});
-        $scope.cards = data;
+        $scope.cards   = data;
+        $scope.guesses = [];
       });
     };
 
@@ -72,13 +74,22 @@ module.exports = function(app) {
     };
 
     $scope.isFriend = function($event) {
-      if ($event.target.innerText === $scope.cards.answer) {
+      var guess = $event.target.innerText;
+      console.log("GUESS TO BE ADDED IS: ", guess);
+      updateGuesses(guess);
+
+      if (guess === $scope.cards.answer) {
+        console.log("TARGET IS: ", $event.target);
         if($event.target.nextSibling.style){
           $event.target.style.backgroundColor = 'green';
         } else {
           $event.target.firstElementChild.style.backgroundColor = 'green';
         }
+        // send data to server & go to next card
+        submitAndNext($scope.guesses);
+
       } else {
+        console.log("TARGET IS: ", $event.target);
         if($event.target.nextSibling.style) {
           $event.target.style.backgroundColor = 'lightcoral';
         } else {
@@ -95,11 +106,25 @@ module.exports = function(app) {
       // }
     };
 
-    function getTokenParam(locStr) {
-      var locArr = locStr.split('/');
+    function submitAndNext(guesses) {
+      var guessesObj = {_id:     $scope.cards._id,
+                        guesses: $scope.guesses};
+      Card.update(guessesObj, function(err, data) {
+        if (err) {$scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
+      });
+      $scope.getAll();
+    }
 
+    // Add name to array, if not already in array
+    function updateGuesses(name) {
+      if( !_.includes($scope.guesses, name) ) { $scope.guesses.push(name); }
+    }
+
+    function getTokenParam(locStr) {
+      var locArr = locStr.split('/learn/');
+      console.log(locArr);
       // If no param on the end, return false, else return the param
-      return (locArr.length < 3 ? false : locArr[locArr.length -1]);
+      return (locArr.length < 2 ? false : locArr[locArr.length -1]);
     }
 
   }]);

@@ -40,6 +40,12 @@ module.exports = function(app) {
             .error(handleError(callback));
         },
 
+        update: function(resourceData, callback) {
+          $http.patch('/' + resourceName, resourceData)
+            .success(handleSuccess(callback))
+            .error(handleError(callback));
+        },
+
         remove: function(resourceData, callback) {
           $http.delete('/' + resourceName + '/' + resourceData._id)
             .success(handleSuccess(callback))

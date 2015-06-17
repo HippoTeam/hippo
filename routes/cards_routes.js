@@ -5,16 +5,18 @@ var bodyparser  = require('body-parser'               );
 var eatAuth     = require('../lib/eat_auth.js')(process.env.AUTH_SECRET);
 var randomArray = require('../lib/randomArrayElements');
 
+function handleError(err, userMsg, msg) {
+  msg ? console.log(msg, err) : console.log(err);
+  res.status(500).json({error: true, msg: userMsg});
+}
 
 module.exports = function(router) {
   router.use(bodyparser.json());
 
   router.get('/cards', eatAuth, function(req, res) {
     Card.find({}, function(err, data) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({msg: 'internal server error'});
-      }
+      if (err) { handleError(err, 'internal server err'); }
+
       var array = randomArray(data, 4)
       var returnObj = {};
       returnObj.pic_url = array[0].personPic;
@@ -27,13 +29,30 @@ module.exports = function(router) {
     });
   });
 
+  router.patch('/cards', eatAuth, function(req, res) {
+    var updateInfo = req.body;  //  {_id(card):..., guesses: ...}
+    console.log(updateInfo.guesses);
+
+    Card.findOne({_id: updateInfo._id}, function(err, card) {
+      if (err) { handleError(err, 'internal server err', 'Error finding card. Error: '); }
+      console.log("FOUND THIS CARD FROM ID: ", card);
+      console.log("GUESSES BEFORE UPDATE ARE: ", card.guesses);
+
+      var combinedGuesses = card.guesses.push(updateInfo.guesses);
+      Card.update({_id: card._id}, combinedGuesses, function(error, updCard) {
+        console.log("GUESSES AFTER UPDATE ARE: ", updCard.guesses);
+        if (err) { handleError(error, 'internal server err', 'Error updating card. Error: '); }
+
+        res.json({error: false, msg: 'card updated'});
+      });
+    });
+
+  });
+
   router.post('/cards', eatAuth, function(req, res) {
     var newCard = new Card(req.body);
     newCard.save(function(err, data) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({msg: 'internal server error'});
-      }
+      if (err) { handleError(err, 'internal server err'); }
 
       res.json(data);
     });
@@ -44,10 +63,7 @@ module.exports = function(router) {
     delete updatedCard._id;
 
     Card.update({'_id': req.params.id}, updatedCard, function(err, data) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({msg: 'internal server error'});
-      }
+      if (err) { handleError(err, 'internal server err'); }
 
       res.json({msg: 'success'});
     });
@@ -55,10 +71,7 @@ module.exports = function(router) {
 
   router.delete('/cards/:id', eatAuth, function(req, res) {
     Card.remove({'_id': req.params.id}, function(err, data) {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({msg: 'internal server error'});
-      }
+      if (err) { handleError(err, 'internal server err'); }
 
       res.json({msg: 'success'});
     });
