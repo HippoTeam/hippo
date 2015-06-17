@@ -33,7 +33,8 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
       controller:  'cardsController'
     })
     .when('/learn/:token', {
-      redirectTo: '/cards'
+      templateUrl: 'templates/views/card_view.html',
+      controller:  'cardsController'
     })
     .when('/login', {
       templateUrl: 'templates/views/sign_in.html'
