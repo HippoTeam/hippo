@@ -99,7 +99,6 @@ describe('cards REST api', function() {
       createUserAndEat(function(user, token) {
         testUser  = user;
         testToken = token;
-        done();
       });
 
       var testCard = new Card({personPic: 'pic', personName:'name'});
