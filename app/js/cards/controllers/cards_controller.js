@@ -21,7 +21,9 @@ module.exports = function(app) {
 
     $scope.getAll = function() {
       Card.getAll(function(err, data) {
-        if(err) return $scope.errors.push({msg: 'error retrieving cards'});
+        if (err && err.reset) { return auth.resetEat(); }
+        if(err) { return $scope.errors.push({msg: 'error retrieving cards'}); }
+
         $scope.cards   = data;
         $scope.guesses = [];
       });
@@ -113,7 +115,8 @@ module.exports = function(app) {
       var guessesObj = {_id:     $scope.cards._id,
                         guesses: $scope.guesses};
       Card.update(guessesObj, function(err, data) {
-        if (err) {$scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
+        if (err && err.reset) { return auth.resetEat(); }
+        if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
       });
       $scope.getAll();
     }
@@ -125,7 +128,7 @@ module.exports = function(app) {
 
     function getTokenParam(locStr) {
       var locArr = locStr.split('/learn/');
-      console.log(locArr);
+      console.log("TOKEN FROM PARAM: ", locArr);
       // If no param on the end, return false, else return the param
       return (locArr.length < 2 ? false : locArr[locArr.length -1]);
     }
