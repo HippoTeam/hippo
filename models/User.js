@@ -9,7 +9,8 @@ var UserSchema = mongoose.Schema({
   facebook_id:    { type: String, required: true },
   fb_last_update: { type: Date,                  },
   settings: {
-    mem_rate_filter: { type: Number, default: 100 }
+    mem_rate_filter: { type: Number, default: 100 },
+    numButtons: {type: Number, default: 10}
   }
 });
 

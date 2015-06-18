@@ -20,14 +20,13 @@ module.exports = function(router) {
     Card.find({userId: req.user.facebook_id, mem_rate: { $lte: percent }}, function(err, data) {
       if (err) { return handleError(err, res, 'internal server err'); }
 
-      var array         = randomArray(data, 4);
+      var array         = randomArray(data, req.user.settings.numButtons);
       var returnObj     = {};
       returnObj.pic_url = array[0].personPic;
       returnObj.answer  = array[0].personName;
       returnObj._id     = array[0]._id;
-      var namesArray    = array.map(function(obj) {
-        return obj.personName;});
-      returnObj.names   = randomArray(namesArray, 4);
+      var namesArray    = array.map(function(obj) { return obj.personName; });
+      returnObj.names   = randomArray(namesArray);
       res.json(returnObj);
     });
   });
