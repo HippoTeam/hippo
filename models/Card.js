@@ -7,7 +7,7 @@ var cardSchema = mongoose.Schema({
   personName: String,
   userId:     String,
   guesses:    { type: Array,  default: []  },
-  mem_rate:   { type: Number, default: 100 }
+  mem_rate:   { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Card', cardSchema);
