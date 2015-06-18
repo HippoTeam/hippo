@@ -15,9 +15,9 @@ module.exports = function(router) {
 
   router.get('/cards/:percent?', eatAuth, function(req, res) {
     var percent = req.params.percent || 100;
-    console.log(percent);
+    console.log("PASSED PERCENT IS: ", percent);
 
-    Card.find({userId: req.user.facebook_id}, function(err, data) {
+    Card.find({userId: req.user.facebook_id}, { percent: { $lt: percent }}, function(err, data) {
       if (err) { return handleError(err, res, 'internal server err'); }
 
       var array = randomArray(data, 4);

@@ -23,6 +23,13 @@ module.exports = function(grunt) {
           file: 'bundle.js'
         }
       },
+      prod: {
+        entry: __dirname + '/app/js/client.js',
+        output: {
+          path: 'prod/',
+          file: 'bundle.js'
+        }
+      },
       test: {
         entry: __dirname + '/test/client/test.js',
         output: {
@@ -53,12 +60,23 @@ module.exports = function(grunt) {
         src: '**/*.html',
         dest: 'build/',
         filter: 'isFile'
+      },
+      prod: {
+        cwd: 'app/',
+        expand: true,
+        flatten: false,
+        src: '**/*.html',
+        dest: 'prod/',
+        filter: 'isFile'
       }
     },
 
     clean: {
       dev: {
         src: 'build/'
+      },
+      prod: {
+        src: 'prod/'
       }
     },
 
@@ -147,5 +165,6 @@ module.exports = function(grunt) {
   grunt.registerTask('mocharun',  ['jshint:dev', 'mochaTest'                          ]);
   grunt.registerTask('test',      ['jshint', 'karmatest', 'mochaTest'                 ]);
   grunt.registerTask('build',     ['build:dev'                                        ]);
+  grunt.registerTask('build:prod',['webpack:prod', 'copy:prod'                        ]);
   grunt.registerTask('default',   ['test'                                             ]);
 };

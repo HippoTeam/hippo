@@ -19,6 +19,14 @@ module.exports = function(app) {
     $scope.cards   = [];
     $scope.guesses = [];
 
+    $scope.redirectCards = function() {
+      $location.path('/cards');
+    };
+
+    $scope.redirectCards2 = function() {
+      $location.path('/cards2');
+    };
+
     $scope.getAll = function() {
       Card.getAll(function(err, data) {
         if (err && err.reset) { return auth.resetEat(); }
@@ -80,6 +88,7 @@ module.exports = function(app) {
 
       if (guess === $scope.cards.answer) {
             $mdToast.show({
+              parent: 'main',
               template: '<md-toast class="md-toast correct">' + 'Correct!!' + '</md-toast>',
               hideDelay: 1000,
               position: 'bottom left'
@@ -94,6 +103,7 @@ module.exports = function(app) {
       } else {
 
         $mdToast.show({
+          parent: 'main',
           template: '<md-toast class="md-toast incorrect">' + 'Wrong, Try Again!' + '</md-toast>',
           hideDelay: 1000,
           position: 'bottom left'
@@ -107,15 +117,6 @@ module.exports = function(app) {
       }
     };
 
-
-    $scope.isFriendStyle = function(card) {
-      // if(card.button) {
-      //   return 'green';
-      // } else {
-      //   return 'red';
-      // }
-    };
-
     function submitAndNext(guesses) {
       var guessesObj = {_id:     $scope.cards._id,
                         guesses: $scope.guesses};
@@ -123,7 +124,6 @@ module.exports = function(app) {
         if (err && err.reset) { return auth.resetEat(); }
         if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
       });
-      $scope.getAll();
     }
 
     // Add name to guesses array, if not already in
@@ -132,7 +132,7 @@ module.exports = function(app) {
     }
 
     function getTokenParam(locStr) {
-      var locArr = locStr.split('/learn/');
+      var locArr = locStr.split('/cards/');
       // If no param on the end, return false, else return the param
       return (locArr.length < 2 ? false : locArr[locArr.length -1]);
     }

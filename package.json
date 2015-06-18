@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "Business/Networking name memorization app",
   "main": "server.js",
+  "engine": "node 0.4.35",
   "scripts": {
     "test": "./node_modules/grunt-cli/bin/grunt test"
   },
