@@ -44,7 +44,7 @@ module.exports = function(router) {
       card.mem_rate = calcMemRate(card.personName, card.guesses);
 
       card.save(function (err, updCard) {
-        if (err) { return handleError(error, 'internal server err', 'Error updating card. Error: '); }
+        if (error) { return handleError(error, 'internal server err', 'Error updating card. Error: '); }
 
         res.json({error: false, msg: 'card updated'});
       });
