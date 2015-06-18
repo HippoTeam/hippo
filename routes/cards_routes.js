@@ -43,7 +43,7 @@ module.exports = function(router) {
       addGuesses.forEach(function(elem) { card.guesses.push(elem) });
       card.mem_rate = calcMemRate(card.personName, card.guesses);
 
-      card.save(function (err, updCard) {
+      card.save(function (error, updCard) {
         if (error) { return handleError(error, 'internal server err', 'Error updating card. Error: '); }
 
         res.json({error: false, msg: 'card updated'});
