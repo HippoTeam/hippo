@@ -53,19 +53,14 @@ describe('User_Routes', function() {
 
     describe('PATCH /users/settings', function() {
       it('updates the users settings for the passed updates', function(done) {
-        // var userCopy = _.cloneDeep(testUser);
-        console.log("THE TEST TOKEN IS: ", testToken);
-        console.log("THE TEST USER IS: ", testUser);
-        // expect(testUser.settings.mem_rate_filter).to.eq(100);
         chai.request('localhost:3000')
           .patch('/users/settings')
           .set({eat: testToken})
           .send({ mem_rate_filter: 50 })
           .end(function(err, res) {
-            var user = res.body.user;
             expect(err).to.eq(null);
-            console.log("RETURNED UPDATED USER IS: ", user);
-            expect(user.settings.mem_rate_filter).to.eq(50);
+            expect(res.body.error  ).to.eq(false);
+            expect(res.body.success).to.eq(true );
             done();
         });
       });

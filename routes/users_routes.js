@@ -25,15 +25,20 @@ module.exports = function(router) {
   router.patch('/users/settings', eatAuth, function(req, res) {
     var settingsUpdates = req.body;
 
-    User.findByIdAndUpdate(req.user._id,
-      { $set: { 'user.settings': settingsUpdates } }, function(err, user) {
+    req.user.update({_id: req.user._id},
+      { $set: { settings: settingsUpdates } }, function(err, update) {
         if (err) {
           console.log('Error saving user settings. Error: ', err);
           return res.status(500).json({error: true, msg: 'internal server error'});
         }
 
+        // Check if update failed
+        if (!update.ok) {
+          console.log('Update was NOT successful');
+          return res.status(422).json({error: true, msg: 'udpates could not be saved'});
+        }
 
-      res.json({error: false, user: user});
+        res.json({error: false, success: true, msg: 'updates saved'});
     });
   });
 }
