@@ -1,8 +1,6 @@
 'use strict';
 
-// var expect = require('chai').expect;
 require('../../app/js/client');
-// require('../../app/js/menu/controllers/sidenav_controller');
 require('angular-mocks');
 
 describe('sidenav controller', function() {
