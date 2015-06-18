@@ -15,9 +15,9 @@ module.exports = function(router) {
   router.use(bodyparser.json());
 
   router.get('/cards', eatAuth, function(req, res) {
-    var percent = req.user.settings.mem_rate_filter;
+    var percent = req.user.settings.mem_rate_filter || 100;
 
-    Card.find({userId: req.user._id, mem_rate: { $lte: percent }}, function(err, data) {
+    Card.find({userId: req.user.facebook_id, mem_rate: { $lte: percent }}, function(err, data) {
       if (err) { return handleError(err, res, 'internal server err'); }
 
       var array         = randomArray(data, 4);

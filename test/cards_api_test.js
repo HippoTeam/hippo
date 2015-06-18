@@ -13,9 +13,8 @@ var createUserAndEat = require('./support/create_test_user.js');
 process.env.AUTH_SECRET         = envVar.AUTH_SECRET;
 process.env.FACEBOOK_APP_ID     = envVar.FACEBOOK_APP_ID;
 process.env.FACEBOOK_APP_SECRET = envVar.FACEBOOK_APP_SECRET;
+process.env.MONGOLAB_URI        = 'mongodb://localhost/hippo_test';
 
-// Set test db
-process.env.MONGOLAB_URI = 'mongodb://localhost/hippo_test';
 
 // Start server
 require('../server');
@@ -64,8 +63,8 @@ describe('cards REST api', function() {
           allCards[num] = new Card({
             personPic:  'pic' + num,
             personName: 'name' + num,
-            mem_rate:   10 * i,        // recommend max 10 users
-            userId:     testUser._id   // takes from user var above
+            mem_rate:   10 * i,                // recommend max 10 users
+            userId:     testUser.facebook_id   // takes from user var above
           });
 
           allCards[num].save(callbackFun);
