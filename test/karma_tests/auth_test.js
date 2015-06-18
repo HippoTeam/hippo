@@ -3,7 +3,7 @@
 require('../../app/js/client');
 require('angular-mocks');
 
-describe('app auth test', function() {
+describe('auth service', function() {
   var auth;
   var $cookies;
   var $location;
