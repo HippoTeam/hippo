@@ -88,6 +88,7 @@ module.exports = function(app) {
 
       if (guess === $scope.cards.answer) {
             $mdToast.show({
+              parent: 'main',
               template: '<md-toast class="md-toast correct">' + 'Correct!!' + '</md-toast>',
               hideDelay: 1000,
               position: 'bottom left'
@@ -102,6 +103,7 @@ module.exports = function(app) {
       } else {
 
         $mdToast.show({
+          parent: 'main',
           template: '<md-toast class="md-toast incorrect">' + 'Wrong, Try Again!' + '</md-toast>',
           hideDelay: 1000,
           position: 'bottom left'
