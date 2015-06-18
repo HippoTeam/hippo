@@ -1,9 +1,15 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('authController', ['$scope', '$location', 'auth', function($scope, $location, auth) {
-    if(auth.isSignedIn()) { $location.path('/learn'); }
+  app.controller('authController', ['$location', '$routeParams', 'auth', function($location, $routeParams, auth) {
 
-    $scope.errors = [];
+    if ($routeParams.token) {
+      auth.setEat($routeParams.token);
+    }
+    //Clear routeParams
+    $location.search('token', null);
+    // Redirect
+    $location.path('/cards');
+
   }]);
 };

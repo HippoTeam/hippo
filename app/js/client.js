@@ -18,8 +18,8 @@ require('./services/set_empty'    )(hippoApp);
 
 // Controllers
 require('./cards/controllers/cards_controller' )(hippoApp);
-require('./cards/controllers/cards_controller' )(hippoApp);
 require('./menu/controllers/sidenav_controller')(hippoApp);
+require('./sessions/auth_controller')(hippoApp);
 
 // Directives
 require('./cards/directives/card_form_directive')(hippoApp);
@@ -28,20 +28,17 @@ require('./cards/directives/card_form_directive')(hippoApp);
 // Custom View Routes
 hippoApp.config(['$routeProvider', function($routeProvider) {
   $routeProvider
-    .when('/cards', {
-      templateUrl: 'templates/views/card_view.html',
-      controller:  'cardsController'
-    })
-    .when('/cards2', {
-      templateUrl: 'templates/views/card_view2.html',
-      controller:  'cardsController'
-    })
-    .when('/cards/:token', {
-      templateUrl: 'templates/views/card_view.html',
-      controller:  'cardsController'
-    })
     .when('/login', {
       templateUrl: 'templates/views/sign_in.html'
+    })
+    .when('/auth', {
+      templateUrl: 'templates/views/auth_view.html'
+    })
+    .when('/cards', {
+      templateUrl: 'templates/views/card_view.html'
+    })
+    .when('/cards2', {
+      templateUrl: 'templates/views/card_view2.html'
     })
     .when('/about_us', {
       templateUrl: 'templates/views/about_us.html'
