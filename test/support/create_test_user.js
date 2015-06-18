@@ -5,7 +5,7 @@ var User   = require('../../models/User.js');
 
 
 // Creates a user and token
-// Passes the user, token into the callback function
+// Passes callback the user & token
 
 module.exports = function createUserAndEat(callback) {
   var userInfo = {access_token: '1234abcd', facebook_id: '1234'};

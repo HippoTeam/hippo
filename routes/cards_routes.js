@@ -1,8 +1,9 @@
 'use strict';
 
-var Card        = require('../models/Card'            );
 var bodyparser  = require('body-parser'               );
+var Card        = require('../models/Card'            );
 var eatAuth     = require('../lib/eat_auth.js')(process.env.AUTH_SECRET);
+var calcMemRate = require('../lib/calc_mem_rate.js'   );
 var randomArray = require('../lib/randomArrayElements');
 
 function handleError(err, res, userMsg, msg) {
@@ -13,21 +14,20 @@ function handleError(err, res, userMsg, msg) {
 module.exports = function(router) {
   router.use(bodyparser.json());
 
-  router.get('/cards/:percent?', eatAuth, function(req, res) {
-    var percent = req.params.percent || 100;
-    console.log("PASSED PERCENT IS: ", percent);
+  router.get('/cards', eatAuth, function(req, res) {
+    var percent = req.user.settings.mem_rate_filter;
 
-    Card.find({userId: req.user.facebook_id}, { percent: { $lt: percent }}, function(err, data) {
+    Card.find({userId: req.user._id, mem_rate: { $lte: percent }}, function(err, data) {
       if (err) { return handleError(err, res, 'internal server err'); }
 
-      var array = randomArray(data, 4);
-      var returnObj = {};
+      var array         = randomArray(data, 4);
+      var returnObj     = {};
       returnObj.pic_url = array[0].personPic;
-      returnObj.answer = array[0].personName;
-      returnObj._id = array[0]._id;
-      var namesArray = array.map(function(obj) {
+      returnObj.answer  = array[0].personName;
+      returnObj._id     = array[0]._id;
+      var namesArray    = array.map(function(obj) {
         return obj.personName;});
-      returnObj.names = randomArray(namesArray, 4);
+      returnObj.names   = randomArray(namesArray, 4);
       res.json(returnObj);
     });
   });
@@ -38,7 +38,10 @@ module.exports = function(router) {
 
     Card.findOne({_id: updateInfo._id}, function(err, card) {
       if (err) { return handleError(err, 'internal server err', 'Error finding card. Error: '); }
+
+      // Add guesses, update mem_rate
       addGuesses.forEach(function(elem) { card.guesses.push(elem) });
+      card.mem_rate = calcMemRate(card.personName, card.guesses);
 
       card.save(function (err, updCard) {
         if (err) { return handleError(error, 'internal server err', 'Error updating card. Error: '); }

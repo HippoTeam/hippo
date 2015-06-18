@@ -4,10 +4,13 @@ var eat      = require('eat'     );
 var mongoose = require('mongoose');
 
 var UserSchema = mongoose.Schema({
-  eat:          { type: Number                              },
-  access_token: {type: String                               },
-  facebook_id:  { type: String, required: true              },
-  fb_last_update: { type: Date,                                }
+  eat:            { type: Number                 },
+  access_token:   { type: String                 },
+  facebook_id:    { type: String, required: true },
+  fb_last_update: { type: Date,                  },
+  settings: {
+    mem_rate_filter: { type: Number, default: 100 }
+  }
 });
 
 UserSchema.methods.generateToken = function generateToken(callback) {
