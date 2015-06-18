@@ -82,13 +82,6 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function(name) {
-      if (name === $scope.cards.answer) {
-        return console.log('yay');
-      }
-      return console.log('nay');
-    };
-
     $scope.isFriend = function(guess) {
       updateGuesses(guess);
 
