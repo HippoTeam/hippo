@@ -25,7 +25,7 @@ module.exports = function(router) {
   router.patch('/users/settings', eatAuth, function(req, res) {
     var settingsUpdates = req.body;
 
-    req.user.update({_id: req.user._id},
+    User.update({_id: req.user._id},
       { $set: { settings: settingsUpdates } }, function(err, update) {
         if (err) {
           console.log('Error saving user settings. Error: ', err);
