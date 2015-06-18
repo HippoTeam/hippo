@@ -43,6 +43,9 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
     .when('/login', {
       templateUrl: 'templates/views/sign_in.html'
     })
+    .when('/about_us', {
+      templateUrl: 'templates/views/about_us.html'
+    })
     .otherwise({
       redirectTo: '/login'
     });

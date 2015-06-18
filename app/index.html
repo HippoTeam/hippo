@@ -3,6 +3,7 @@
 <head>
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" charset="UTF-8" />
   <link rel="stylesheet" href="/css/angular-material.min.css">
+  <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon" />
   <style>
   body {overflow: hidden;}
   .circular {
@@ -11,6 +12,19 @@
     margin-right: auto;
   	width: 240px;
   	height: 240px;
+  	border-radius: 150px;
+  	-webkit-border-radius: 150px;
+  	-moz-border-radius: 150px;
+  	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	}
+  .smallcircular {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  	width: 150px;
+  	height: 150px;
   	border-radius: 150px;
   	-webkit-border-radius: 150px;
   	-moz-border-radius: 150px;
@@ -45,7 +59,7 @@
   .page.ng-leave        { animation:slideOutLeft 0.5s both ease-in; }
 
   </style>
-  <title>Client Side</title>
+  <title>Hippo</title>
 </head>
 <body data-ng-app="hippoApp">
 
@@ -63,8 +77,18 @@
         </md-button>
       </md-list-item>
       <md-list-item>
-        <md-button>
+        <md-button data-ng-href="/#/cards">
             Facebook friend cards
+        </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button data-ng-href="/#/about_us">
+            About us
+        </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button data-ng-href="https://github.com/HippoTeam/hippo">
+            View the code on GitHub
         </md-button>
       </md-list-item>
     </md-list>
