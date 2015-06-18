@@ -20,7 +20,9 @@ describe('cards controller', function() {
     expect(typeof cardsController).toBe('object');
     expect(Array.isArray($scope.cards)).toBe(true);
     expect(Array.isArray($scope.errors)).toBe(true);
+    expect(Array.isArray($scope.guesses)).toBe(true);
     expect(typeof $scope.getAll).toBe('function');
+    expect(typeof $scope.isFriend).toBe('function');
   });
 
   describe('REST functionality', function() {
