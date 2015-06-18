@@ -5,14 +5,11 @@
      <md-card-content>
       <md-button data-ng-click="redirectCards2()">NEXT</md-button>
      </md-card-content>
-     <div class="md-actions" layout="row">
-       <md-button data-ng-click="isFriend($event)">{{cards.names[0]}}</md-button>
-       <md-button data-ng-click="isFriend($event)">{{cards.names[1]}}</md-button>
-     </div>
-     <div class="md-actions" layout="row">
-       <md-button data-ng-click="isFriend($event)">{{cards.names[2]}}</md-button>
-       <md-button data-ng-click="isFriend($event)">{{cards.names[3]}}</md-button>
-     </div>
+      <div class="md-actions" layout="row">
+       <div ng-repeat="cardName in cards.names">
+        <md-button name={{cardName}} data-ng-click="isFriend(cardName)">{{cardName}}</md-button>
+       </div>
+      </div>
     </md-card>
   </md-content>
 </section>

@@ -82,38 +82,33 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function($event) {
-      var guess = $event.target.innerText;
+    $scope.isFriend = function(name) {
+      if (name === $scope.cards.answer) {
+        return console.log('yay');
+      }
+      return console.log('nay');
+    };
+
+    $scope.isFriend = function(guess) {
       updateGuesses(guess);
 
       if (guess === $scope.cards.answer) {
-            $mdToast.show({
-              parent: 'main',
-              template: '<md-toast class="md-toast correct">' + 'Correct!!' + '</md-toast>',
-              hideDelay: 1000,
-              position: 'bottom left'
-              });
-        if($event.target.nextSibling.style){
-          $event.target.style.backgroundColor = 'green';
-        } else {
-          $event.target.firstElementChild.style.backgroundColor = 'green';
-        }
-        // send data to server & go to next card
-        submitAndNext($scope.guesses);
-      } else {
+        document.getElementsByName(guess)[0].style.backgroundColor = "green";
+        showToast('Correct!!', 'correct');
 
+        // send data to server & go to next card
+        return submitAndNext($scope.guesses);
+      }
+      showToast('Wrong, Try Again!', 'incorrect');
+        document.getElementsByName(guess)[0].style.backgroundColor = 'lightcoral';
+
+      function showToast(message, className) {
         $mdToast.show({
           parent: 'main',
-          template: '<md-toast class="md-toast incorrect">' + 'Wrong, Try Again!' + '</md-toast>',
+          template: '<md-toast class="md-toast ' + className + '">' + message + '</md-toast>',
           hideDelay: 1000,
           position: 'bottom left'
         });
-
-        if($event.target.nextSibling.style) {
-          $event.target.style.backgroundColor = 'lightcoral';
-        } else {
-          $event.target.firstElementChild.style.backgroundColor = 'lightcoral';
-        }
       }
     };
 
