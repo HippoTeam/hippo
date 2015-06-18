@@ -18,6 +18,7 @@ require('./services/set_empty'    )(hippoApp);
 
 // Controllers
 require('./cards/controllers/cards_controller' )(hippoApp);
+require('./settings/controllers/settings_controller' )(hippoApp);
 require('./menu/controllers/sidenav_controller')(hippoApp);
 require('./sessions/auth_controller')(hippoApp);
 
@@ -42,6 +43,9 @@ hippoApp.config(['$routeProvider', function($routeProvider) {
     })
     .when('/about_us', {
       templateUrl: 'templates/views/about_us.html'
+    })
+    .when('/settings', {
+      templateUrl: 'templates/views/settings.html'
     })
     .otherwise({
       redirectTo: '/login'

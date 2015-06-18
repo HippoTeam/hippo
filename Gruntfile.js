@@ -111,7 +111,8 @@ module.exports = function(grunt) {
             describe: true,
             it: true,
             before: true,
-            after: true
+            after: true,
+            document: true
           }
         }
       },

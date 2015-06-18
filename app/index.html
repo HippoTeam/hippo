@@ -93,7 +93,7 @@
       </md-list-item>
     </md-list>
   </md-sidenav>
-  <md-toolbar>
+  <md-toolbar ng-attr-style="background: rgb({{color.red}},{{color.green}},{{color.blue}})">
     <div class="md-toolbar-tools md-tall" >
       <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
       <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
@@ -101,14 +101,19 @@
       <span>Hippo</span>
       <!-- fill up the space between left and right area -->
       <span flex></span>
-      <md-button class="md-icon-button" aria-label="More">
-        <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
-      </md-button>
+      <md-menu data-ng-if="isSignedIn()">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="$mdOpenMenu()">
+          <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <md-menu-item><md-button data-ng-href="/#/settings">Settings</md-button></md-menu-item>
+          </md-menu-item>
+      </md-menu>
     </div>
   </md-toolbar>
 </div>
 <main class= "page" data-ng-view></main>
-
 <script src="bundle.js"></script>
 </body>
 </html>
