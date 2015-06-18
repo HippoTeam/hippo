@@ -20,11 +20,11 @@ module.exports = function(app) {
 
       resetEat: function resetEat() {
         this.logout();
-        $location.path('/login');
       },
 
       logout: function logout() {
-        $cookies.put('eat', '');
+        $cookies.put('eat', '' );
+        $location.path('/login');
       }
     };
   }]);

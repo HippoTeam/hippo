@@ -132,7 +132,7 @@ module.exports = function(app) {
     }
 
     function getTokenParam(locStr) {
-      var locArr = locStr.split('/learn/');
+      var locArr = locStr.split('/cards/');
       // If no param on the end, return false, else return the param
       return (locArr.length < 2 ? false : locArr[locArr.length -1]);
     }

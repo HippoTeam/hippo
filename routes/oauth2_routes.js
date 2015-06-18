@@ -29,7 +29,7 @@ module.exports = function(app, passport) {
         return res.status(500).json({error: true, msg: 'internal server error'});
       }
 
-      res.redirect('/#/learn/' + token);
+      res.redirect('/#/cards/' + token);
     });
   }
 };
