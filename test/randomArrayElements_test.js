@@ -21,4 +21,10 @@ describe('randomArrayElements function', function() {
     expect(randomArray.length).to.eql(10);
     expect(Array.isArray(randomArray)).to.eql(true);
   });
+
+  it('should return the original array randomized if no num is provided', function() {
+    var randomArray = randomArrayElements(array);
+    expect(randomArray.length).to.eql(10);
+    expect(Array.isArray(randomArray)).to.eql(true);
+  });
 });

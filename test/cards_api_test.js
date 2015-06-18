@@ -13,9 +13,8 @@ var createUserAndEat = require('./support/create_test_user.js');
 process.env.AUTH_SECRET         = envVar.AUTH_SECRET;
 process.env.FACEBOOK_APP_ID     = envVar.FACEBOOK_APP_ID;
 process.env.FACEBOOK_APP_SECRET = envVar.FACEBOOK_APP_SECRET;
+process.env.MONGOLAB_URI        = 'mongodb://localhost/hippo_test';
 
-// Set test db
-process.env.MONGOLAB_URI = 'mongodb://localhost/hippo_test';
 
 // Start server
 require('../server');
@@ -38,7 +37,7 @@ describe('cards REST api', function() {
     });
   });
 
-  it('should be able to create a new card', function(done) {
+  it('POST /cards should be able to create a new card', function(done) {
     chai.request('localhost:3000')
       .post('/cards')
       .set({eat: testToken})
@@ -52,46 +51,39 @@ describe('cards REST api', function() {
       });
   });
 
-  describe('needs at least 4 existing cards to work with' , function() {
-    beforeEach(function(done) {
-      var count = 0;
-      var testCard1 = new Card({
-        personPic: 'pic1',
-        personName:'name1',
-        userId: testUser.facebook_id
-      });
-      var testCard2 = new Card({
-        personPic: 'pic2',
-        personName:'name2',
-        userId: testUser.facebook_id
-      });
-      var testCard3 = new Card({
-        personPic: 'pic3',
-        personName:'name3',
-        userId: testUser.facebook_id
-      });
-      var testCard4 = new Card({
-        personPic: 'pic4',
-        personName:'name4',
-        userId: testUser.facebook_id
-      });
-      testCard1.save(callbackFun);
-      testCard2.save(callbackFun);
-      testCard3.save(callbackFun);
-      testCard4.save(callbackFun);
+  describe('methods needing at least 4 cards to work with:' , function() {
+    before(function(done) {
+      var count    = 0;   // verify how many saved thus far
+      var allCards = [];  // store created cards here
+      var numCards = 5;   // number of cards to create
+
+      // Create and save test cards.
+      for(var testCard, i = 1; i <= numCards; i++) {
+        (function(num) {
+          allCards[num] = new Card({
+            personPic:  'pic' + num,
+            personName: 'name' + num,
+            mem_rate:   10 * i,                // recommend max 10 users
+            userId:     testUser.facebook_id   // takes from user var above
+          });
+
+          allCards[num].save(callbackFun);
+        })(i);
+      }
+
       function callbackFun(err, data) {
         if(err) throw err;
         allSaved();
       }
       function allSaved() {
         count++;
-        if (count === 4) {
+        if (count === numCards) {
           done();
         }
       }
     });
 
-    it('should get an object on a get request', function(done) {
+    it('GET /cards should get an object on a get request', function(done) {
       chai.request('localhost:3000')
       .get('/cards')
       .set({eat: testToken})
@@ -105,9 +97,27 @@ describe('cards REST api', function() {
         done();
       });
     });
+
+    it('GET /cards with user mem_rate_filter=40 gets cards with 40% max mem_rate', function(done) {
+      testUser.settings.mem_rate_filter = 40;
+      testUser.save();
+
+      chai.request('localhost:3000')
+      .get('/cards')
+      .set({eat: testToken})
+      .end(function(err, res) {
+        expect(err).to.eql(null);
+        expect(res.body.names.length).to.eq(4);
+        expect(res.body.names).to.include('name1');
+        expect(res.body.names).to.include('name2');
+        expect(res.body.names).to.include('name3');
+        expect(res.body.names).to.include('name4');
+        done();
+      });
+    });
   });
 
-  describe('needs an existing card to work with', function() {
+  describe('methods needing 1 existing card to work with:', function() {
     var testUser;
     var testToken;
 
@@ -132,7 +142,7 @@ describe('cards REST api', function() {
       expect(this.testCard).to.have.property('_id');
     });
 
-    it('should update a card', function(done) {
+    it('PUT /cards/someId should update the card', function(done) {
       var id = this.testCard._id;
       chai.request('localhost:3000')
       .put('/cards/' + id)
@@ -145,7 +155,7 @@ describe('cards REST api', function() {
       });
     });
 
-    it('should be able to delete a card', function(done) {
+    it('DELETE /cards/someId should be able to delete the card', function(done) {
       chai.request('localhost:3000')
         .del('/cards/' + this.testCard._id)
         .set({eat: testToken})
