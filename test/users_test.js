@@ -45,7 +45,7 @@ describe('User_Routes', function() {
           .set({eat: testToken})
           .end(function(err, res) {
             expect(err).to.eq(null);
-            expect(res.body.user.facebook_id).to.eq('1234');
+            expect(res.body.facebook_id).to.eq('1234');
             done();
           });
       });
