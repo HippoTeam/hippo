@@ -11,7 +11,7 @@ module.exports = function createUserAndEat(callback) {
   var userInfo = {  access_token: '1234abcd',
                     facebook_id:  '1234',
                     settings: {
-                      numButtons:       4,
+                      num_buttons:       4,
                       mem_rate_filter:  100
                     }
                   };

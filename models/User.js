@@ -10,7 +10,7 @@ var UserSchema = mongoose.Schema({
   fb_last_update: { type: Date,                  },
   settings: {
     mem_rate_filter: { type: Number, default: 100 },
-    numButtons: {type: Number, default: 4}
+    num_buttons: {type: Number, default: 4}
   }
 });
 
