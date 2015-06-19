@@ -1,62 +1,59 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('settingsController',  ['$http', '$scope', '$rootScope', '$mdToast', '$animate', function($http, $scope, $rootScope, $mdToast, $animate ) {
-    // $rootScope.color = {
-    // red: 63,
-    // green: 81,
-    // blue: 181
-    // };
-    // $scope.choices = 10;
-    // $scope.personFilter = 65;
-    // $scope.fun = 0;
+  app.controller('settingsController',  ['$http', 'RESTResource', 'auth', '$scope', '$rootScope', '$mdToast', function($http, resource, auth, $scope, $rootScope, $mdToast ) {
 
-    $scope.changeColor = function() {
-      $rootScope.color = {
-      red: $scope.color.red,
-      green: $scope.color.green,
-      blue:  $scope.color.blue
-      };
+    var User = resource('users');
+
+    $scope.getSettings = function() {
+      User.getAll(function(err, data) {
+        if (err && err.reset) { return auth.resetEat(); }
+        $scope.settings = data.settings;
+        updateRootScopeColor();
+      });
     };
 
-    $scope.changeChoices = function() {
-      $http.patch('/users/settings', {numButtons: $scope.choices})
-        .success(function(data) {
-          $mdToast.show({
+    function updateRootScopeColor() {
+      $rootScope.color = {
+        red: $scope.settings.color.red,
+        green: $scope.settings.color.green,
+        blue:  $scope.settings.color.blue
+      };
+    }
+
+    $scope.updateSettings = function() {
+      updateRootScopeColor();
+      User.update($scope.settings, function(err, data) {
+        if (err && err.reset) { return auth.resetEat(); }
+        if (err) {
+          return $mdToast.show({
             parent: 'main',
-            template: '<md-toast class="md-toast correct">' + 'Successfully changed number of choices to ' + $scope.choices + '!</md-toast>',
-            hideDelay: 1000,
-            position: 'bottom left'
-            });
-        })
-        .error(function(data) {
-          $mdToast.show({
-            parent: 'main',
-            template: '<md-toast class="md-toast correct">Could not save settings</md-toast>',
+            template: '<md-toast class="md-toast incorrect">Error: Could not save settings</md-toast>',
             hideDelay: 1000,
             position: 'bottom left'
           });
+        }
+        return $mdToast.show({
+          parent: 'main',
+          template: '<md-toast class="md-toast correct">Settings saved!</md-toast>',
+          hideDelay: 1000,
+          position: 'bottom left'
         });
-    };
-
-    $scope.changePersonFilter = function() {
-      $mdToast.show({
-        parent: 'main',
-        template: '<md-toast class="md-toast correct">' + 'Successfully change person filter to ' + $scope.personFilter + '!</md-toast>',
-        hideDelay: 1000,
-        position: 'bottom left'
-        });
+      });
     };
 
     $scope.funMeter = function() {
-      if($scope.fun < 777) {
+      User.update($scope.settings, function(err, data) {
+        if (err && err.reset) { return auth.resetEat(); }
+      });
+      if($scope.settings.fun_meter < 777) {
         $mdToast.show({
           parent: 'main',
           template: '<md-toast class="md-toast incorrect">' + 'Error: Need moar fun!</md-toast>',
           hideDelay: 1000,
           position: 'bottom left'
           });
-      } else if($scope.fun > 777) {
+      } else if($scope.settings.fun_meter > 777) {
         $mdToast.show({
           parent: 'main',
           template: '<md-toast class="md-toast incorrect">' + 'Error: Too much fun to handle!</md-toast>',
@@ -72,7 +69,5 @@ module.exports = function(app) {
           });
       }
     };
-
-
   }]);
 };

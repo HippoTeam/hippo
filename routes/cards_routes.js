@@ -17,10 +17,10 @@ module.exports = function(router) {
   router.get('/cards', eatAuth, function(req, res) {
     var percent = req.user.settings.mem_rate_filter || 100;
 
-    Card.find({userId: req.user.facebook_id, mem_rate: { $lte: percent }}, function(err, data) {
+    Card.find({userId: req.user.facebook_id}, function(err, data) {
       if (err) { return handleError(err, res, 'internal server err'); }
 
-      var array         = randomArray(data, req.user.settings.numButtons);
+      var array         = randomArray(data, req.user.settings.num_buttons);
       var returnObj     = {};
       returnObj.pic_url = array[0].personPic;
       returnObj.answer  = array[0].personName;
