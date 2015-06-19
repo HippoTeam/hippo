@@ -22,30 +22,32 @@ module.exports = function(router) {
       if (cards.length === 0) {   // no cards
         return handleError(false, res, 'Good job - no more user scores this low!');
       }
-      var card = randomArray(cards, 1);   // take one, keep it random
+      var card = randomArray(cards, 1)[0];   // take one, keep it random
 
       Card.find({userId: req.user.facebook_id}, function(error, otherCards) {
         if (error) { return handleError(error, res, 'internal server error'); }
 
-        // remove duplicate names from guesses
+        // Narrowing down cards to only what we are going to send (settings.num_buttons)
         var array = randomArray(otherCards, req.user.settings.num_buttons);
+
+        // If we got the same name as original card.personName (answer), remove
         array.filter(function(elem) { card.personName !==  elem.personName});
 
         // if now too many after removing duplciate, return error msg
-        if (otherCards.length < req.user.settings.num_buttons - 1) {
-          return handleError(error, res, 'not enough cards')
-        }
+        // if (array.length < req.user.settings.num_buttons - 1) {
+        //   return handleError(error, res, 'not enough cards')
+        // }
 
-        // if too many still, remove one
+        // If too many cards, remove one
         if (array.length === (req.user.settings.num_buttons) ) { array.pop(); }
 
         var returnObj     = {};
-        returnObj.pic_url = card[0].personPic;
-        returnObj.answer  = card[0].personName;
-        returnObj._id     = card[0]._id;
+        returnObj.pic_url = card.personPic;
+        returnObj.answer  = card.personName;
+        returnObj._id     = card._id;
 
         var namesArray    = array.map(function(obj) { return obj.personName; });
-        namesArray.push(card[0].personName);        // add answer into names array
+        namesArray.push(card.personName);        // add answer into names array
         returnObj.names   = randomArray(namesArray);
         res.json(returnObj);
       });
@@ -53,7 +55,7 @@ module.exports = function(router) {
   });
 
   router.patch('/cards', eatAuth, function(req, res) {
-    var updateInfo = req.body;  //  {_id(card):..., guesses: ...}
+    var updateInfo = req.body;  //  {_id(card): String, guesses: Array}
     var addGuesses = req.body.guesses;
 
     Card.findOne({_id: updateInfo._id}, function(err, card) {
