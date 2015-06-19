@@ -5,12 +5,7 @@ var _ = require('lodash');
 module.exports = function(app) {
 
   app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', '$mdToast', '$animate', function($scope, resource, copy, empty, $location, auth, $mdToast, $animate) {
-    var currPath = $location.path();
-    // If not signed in & token in params, set eat
-    if (!auth.isSignedIn() && currPath && getTokenParam(currPath) ) {
-      auth.setEat( getTokenParam(currPath) );
-    }
-    // If still not signed in, redirect
+    // If not signed in, redirect
     if (!auth.isSignedIn()) { $location.path('/login'); }
 
 
@@ -118,12 +113,5 @@ module.exports = function(app) {
     function updateGuesses(name) {
       if( !_.includes($scope.guesses, name) ) { $scope.guesses.push(name); }
     }
-
-    function getTokenParam(locStr) {
-      var locArr = locStr.split('/cards/');
-      // If no param on the end, return false, else return the param
-      return (locArr.length < 2 ? false : locArr[locArr.length -1]);
-    }
-
   }]);
 };

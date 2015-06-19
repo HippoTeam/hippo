@@ -20,11 +20,22 @@ module.exports = function(app) {
     };
 
     $scope.changeChoices = function() {
-      $mdToast.show({
-        parent: 'main',
-        template: '<md-toast class="md-toast correct">' + 'Successfully changed number of choices to ' + $scope.choices + '!</md-toast>',
-        hideDelay: 1000,
-        position: 'bottom left'
+      $http.patch('/users/settings', {numButtons: $scope.choices})
+        .success(function(data) {
+          $mdToast.show({
+            parent: 'main',
+            template: '<md-toast class="md-toast correct">' + 'Successfully changed number of choices to ' + $scope.choices + '!</md-toast>',
+            hideDelay: 1000,
+            position: 'bottom left'
+            });
+        })
+        .error(function(data) {
+          $mdToast.show({
+            parent: 'main',
+            template: '<md-toast class="md-toast correct">Could not save settings</md-toast>',
+            hideDelay: 1000,
+            position: 'bottom left'
+          });
         });
     };
 

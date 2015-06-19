@@ -18,8 +18,7 @@ module.exports = function(app) {
     return function(resourceName) {
 
       // Set header with cookie
-      var eat = auth.getEat();
-      $http.defaults.headers.common.eat = eat;
+      $http.defaults.headers.common.eat = auth.getEat();
 
       return {
         getAll: function(callback) {
