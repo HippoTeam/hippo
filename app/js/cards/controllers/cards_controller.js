@@ -9,7 +9,7 @@ module.exports = function(app) {
     if (!auth.isSignedIn()) { $location.path('/login'); }
 
     var Card = resource('cards');
-    $scope.cards   = {};
+    $scope.cards   = [];
     $scope.guesses = [];
     $scope.errors  = [];
 
@@ -76,53 +76,50 @@ module.exports = function(app) {
       }
     }
 
+    $scope.createNewCard = function(card) {
+      var newCard = copy(card);
+      card = empty(card);
+      $scope.cards.push(newCard);
+      Card.create(newCard, function(err, data) {
+        if(err) return $scope.errors.push({msg: 'could not save new card' + newCard.personName});
+        $scope.cards.splice($scope.cards.indexOf(newCard), 1, data);
+      });
+    };
 
+    $scope.removeCard = function(card) {
+      $scope.cards.splice($scope.cards.indexOf(card), 1);
+      Card.remove(card, function(err) {
+        if(err) {
+          $scope.errors.push({msg: 'could not remove card: ' + card.personName});
+        }
+      });
+    };
 
-    //Not currently being used
-    // $scope.createNewCard = function(card) {
-    //   var newCard = copy(card);
-    //   card = empty(card);
-    //   $scope.cards.push(newCard);
-    //   Card.create(newCard, function(err, data) {
-    //     if(err) return $scope.errors.push({msg: 'could not save new card' + newCard.personName});
-    //     $scope.cards.splice($scope.cards.indexOf(newCard), 1, data);
-    //   });
-    // };
+    $scope.saveCard = function(card) {
+      card.editing = false;
+      Card.save(card, function(err, data) {
+        if(err) $scope.errors.push({msg: 'could not update card'});
+      });
+    };
 
-    // $scope.removeCard = function(card) {
-    //   $scope.cards.splice($scope.cards.indexOf(card), 1);
-    //   Card.remove(card, function(err) {
-    //     if(err) {
-    //       $scope.errors.push({msg: 'could not remove card: ' + card.personName});
-    //     }
-    //   });
-    // };
+    $scope.toggleEdit = function(card) {
+      if(card.editing) {
+        card.personName = card.personNameBackup;
+        card.personPic = card.personPicBackup;
+        card.personNameBackup = undefined;
+        card.personPicBackup = undefined;
+        card.editing = false;
+      } else {
+        card.personNameBackup = card.personName;
+        card.personPicBackup = card.personPic;
+        card.editing = true;
+      }
+    };
 
-    // $scope.saveCard = function(card) {
-    //   card.editing = false;
-    //   Card.save(card, function(err, data) {
-    //     if(err) $scope.errors.push({msg: 'could not update card'});
-    //   });
-    // };
-
-    // $scope.toggleEdit = function(card) {
-    //   if(card.editing) {
-    //     card.personName = card.personNameBackup;
-    //     card.personPic = card.personPicBackup;
-    //     card.personNameBackup = undefined;
-    //     card.personPicBackup = undefined;
-    //     card.editing = false;
-    //   } else {
-    //     card.personNameBackup = card.personName;
-    //     card.personPicBackup = card.personPic;
-    //     card.editing = true;
-    //   }
-    // };
-
-    // $scope.clearErrors = function() {
-    //   $scope.errors = [];
-    //   $scope.getAll();
-    // };
+    $scope.clearErrors = function() {
+      $scope.errors = [];
+      $scope.getAll();
+    };
 
   }]);
 };
