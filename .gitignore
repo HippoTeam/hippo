@@ -4,4 +4,3 @@ test/**/*bundle.js
 npm-debug.log
 .env
 **/build/
-**/prod/

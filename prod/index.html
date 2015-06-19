@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" charset="UTF-8" />
+  <link rel="stylesheet" href="/css/angular-material.min.css">
+  <link rel="shortcut icon" href="/img/favicon.png" type="image/x-icon" />
+  <style>
+  body {overflow: hidden;}
+  .circular {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  	width: 240px;
+  	height: 240px;
+  	border-radius: 150px;
+  	-webkit-border-radius: 150px;
+  	-moz-border-radius: 150px;
+  	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	}
+  .smallcircular {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  	width: 150px;
+  	height: 150px;
+  	border-radius: 150px;
+  	-webkit-border-radius: 150px;
+  	-moz-border-radius: 150px;
+  	box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	}
+  .sidebar-button {
+    text-align: left;
+  }
+  .md-button {
+    text-transform: none;
+  }
+
+  .md-toast.incorrect {
+    background-color: red;
+  }
+
+  .md-toast.correct {
+      background-color: green;
+  }
+  /* slide in from the right */
+  @keyframes slideInRight {
+      from    { transform:translateX(100%); }
+      to      { transform: translateX(0); }
+  }
+
+  @keyframes slideOutLeft {
+    to      { transform: translateX(-100%); }
+  }
+  .page.ng-enter        { animation:slideInRight 0.5s both ease-in; }
+  .page.ng-leave        { animation:slideOutLeft 0.5s both ease-in; }
+
+  </style>
+  <title>Hippo</title>
+</head>
+<body data-ng-app="hippoApp">
+
+  <div layout="row" ng-controller="sidenavController">
+  <md-sidenav md-component-id="left" class="md-sidenav-left">
+    <md-list>
+      <md-list-item data-ng-if="isSignedOut()">
+        <md-button class="sidebar-button" data-ng-href="/auth/facebook">
+          Login via Facebook
+        </md-button>
+      </md-list-item>
+      <md-list-item data-ng-if="isSignedIn()">
+        <md-button class="sidebar-button" data-ng-click="logout()">
+          Logout
+        </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button class="sidebar-button" data-ng-href="/#/cards">
+            Play!
+        </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button class="sidebar-button" data-ng-href="/#/about_us">
+            About us
+        </md-button>
+      </md-list-item>
+      <md-list-item>
+        <md-button class="sidebar-button" data-ng-href="https://github.com/HippoTeam/hippo">
+            View the code on GitHub
+        </md-button>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+  <md-toolbar ng-attr-style="background: rgb({{color.red}},{{color.green}},{{color.blue}})">
+    <div class="md-toolbar-tools md-tall" >
+      <md-button class="md-icon-button" aria-label="Settings" ng-click="openLeftMenu()">
+      <md-icon md-svg-icon="img/icons/menu.svg"></md-icon>
+      </md-button>
+      <span>Hippo</span>
+      <!-- fill up the space between left and right area -->
+      <span flex></span>
+      <md-menu data-ng-if="isSignedIn()">
+        <md-button class="md-icon-button" aria-label="Settings" ng-click="$mdOpenMenu()">
+          <md-icon md-svg-icon="img/icons/more_vert.svg"></md-icon>
+        </md-button>
+        <md-menu-content width="4">
+          <md-menu-item>
+            <md-menu-item><md-button data-ng-href="/#/settings">Settings</md-button></md-menu-item>
+          </md-menu-item>
+      </md-menu>
+    </div>
+  </md-toolbar>
+</div>
+<main class= "page" data-ng-view></main>
+<script src="bundle.js"></script>
+</body>
+</html>
