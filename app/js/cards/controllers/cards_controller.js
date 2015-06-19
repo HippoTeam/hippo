@@ -4,7 +4,7 @@ var _ = require('lodash');
 
 module.exports = function(app) {
 
-  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', '$mdToast', '$animate', function($scope, resource, copy, empty, $location, auth, $mdToast, $animate) {
+  app.controller('cardsController', ['$scope', 'RESTResource', 'copy', 'setEmpty', '$location', 'auth', '$mdToast', '$animate', '$timeout', function($scope, resource, copy, empty, $location, auth, $mdToast, $animate, $timeout) {
     // If not signed in, redirect
     if (!auth.isSignedIn()) { $location.path('/login'); }
 
@@ -106,6 +106,10 @@ module.exports = function(app) {
       Card.update(guessesObj, function(err, data) {
         if (err && err.reset) { return auth.resetEat(); }
         if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
+        if ($location.path() === '/cards') {
+          return ($timeout($scope.redirectCards2, 500));
+        }
+        return ($timeout($scope.redirectCards, 500));
       });
     }
 
