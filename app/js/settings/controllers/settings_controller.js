@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = function(app) {
-  app.controller('settingsController',  ['$http', 'RESTResource', 'auth', '$scope', '$rootScope', '$mdToast', function($http, resource, auth, $scope, $rootScope, $mdToast ) {
+  app.controller('settingsController',  ['RESTResource', 'auth', '$scope', '$rootScope', '$mdToast', function(resource, auth, $scope, $rootScope, $mdToast ) {
 
     var User = resource('users');
 
