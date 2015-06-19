@@ -37,24 +37,24 @@ describe('User_Routes', function() {
       mongoose.connection.db.dropDatabase(function() { done(); });
     });
 
-    describe('GET to /user/:id', function() {
+    describe('GET to /user', function() {
 
-      it('returns the user matching the id', function(done) {
+      it('returns the user', function(done) {
         chai.request('localhost:3000')
-          .get('/users/' + testUser._id)
+          .get('/users')
           .set({eat: testToken})
           .end(function(err, res) {
             expect(err).to.eq(null);
-            expect(res.body.user.facebook_id).to.eq('1234');
+            expect(res.body.facebook_id).to.eq('1234');
             done();
           });
       });
     });
 
-    describe('PATCH /users/settings', function() {
+    describe('PATCH /users', function() {
       it('updates the users settings for the passed updates', function(done) {
         chai.request('localhost:3000')
-          .patch('/users/settings')
+          .patch('/users')
           .set({eat: testToken})
           .send({ mem_rate_filter: 50 })
           .end(function(err, res) {
