@@ -17,17 +17,38 @@ module.exports = function(router) {
   router.get('/cards', eatAuth, function(req, res) {
     var percent = req.user.settings.mem_rate_filter || 100;
 
-    Card.find({userId: req.user.facebook_id}, function(err, data) {
-      if (err) { return handleError(err, res, 'internal server err'); }
+    Card.find({userId: req.user.facebook_id, mem_rate: { $lte: percent }}, function(err, cards) {
+      if (err ) { return handleError(err, res, 'internal server error'); }
+      if (cards.length === 0) {   // no cards
+        return handleError(false, res, 'Good job - no more user scores this low!');
+      }
+      var card = randomArray(cards, 1);   // take one, keep it random
 
-      var array         = randomArray(data, req.user.settings.num_buttons);
-      var returnObj     = {};
-      returnObj.pic_url = array[0].personPic;
-      returnObj.answer  = array[0].personName;
-      returnObj._id     = array[0]._id;
-      var namesArray    = array.map(function(obj) { return obj.personName; });
-      returnObj.names   = randomArray(namesArray);
-      res.json(returnObj);
+      Card.find({userId: req.user.facebook_id}, function(error, otherCards) {
+        if (error) { return handleError(error, res, 'internal server error'); }
+
+        // remove duplicate names from guesses
+        var array = randomArray(otherCards, req.user.settings.num_buttons);
+        array.filter(function(elem) { card.personName !==  elem.personName});
+
+        // if now too many after removing duplciate, return error msg
+        if (otherCards.length < req.user.settings.num_buttons - 1) {
+          return handleError(error, res, 'not enough cards')
+        }
+
+        // if too many still, remove one
+        if (array.length === (req.user.settings.num_buttons) ) { array.pop(); }
+
+        var returnObj     = {};
+        returnObj.pic_url = card[0].personPic;
+        returnObj.answer  = card[0].personName;
+        returnObj._id     = card[0]._id;
+
+        var namesArray    = array.map(function(obj) { return obj.personName; });
+        namesArray.push(card[0].personName);        // add answer into names array
+        returnObj.names   = randomArray(namesArray);
+        res.json(returnObj);
+      });
     });
   });
 
