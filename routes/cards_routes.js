@@ -21,7 +21,7 @@ module.exports = function(router) {
       var card;
       if (err ) { return handleError(err, res, 'internal server error'); }
       if (cards.length === 0) {   // at least one card
-        return handleError(false, res, 'Good job - no more users scores this low!');
+        return handleError(false, res, 'Good job - no more user scores this low!');
       }
       card = randomArray(cards, 1);   // take one, keep it random
 
