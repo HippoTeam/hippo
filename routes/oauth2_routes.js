@@ -29,6 +29,7 @@ module.exports = function(app, passport) {
         return res.status(500).json({error: true, msg: 'internal server error'});
       }
 
+      token = encodeURIComponent(token);
       res.redirect('/#/auth?token=' + token);
     });
   }
