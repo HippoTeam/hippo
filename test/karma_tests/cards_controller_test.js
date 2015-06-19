@@ -6,6 +6,7 @@ require('angular-mocks');
 describe('cards controller', function() {
   var $ControllerConstructor;
   var $httpBackend;
+  var $location;
   var $scope;
 
   beforeEach(angular.mock.module('hippoApp'));
@@ -88,5 +89,47 @@ describe('cards controller', function() {
       expect($scope.errors[0].msg).toBe('could not remove card: test card');
     });
 
+  });
+
+  describe('controller functionality', function() {
+    beforeEach(angular.mock.inject(function(_$httpBackend_, _$location_) {
+      $httpBackend = _$httpBackend_;
+      $location = _$location_;
+      this.cardsController = $ControllerConstructor('cardsController', {$scope: $scope});
+    }));
+
+    it('it should redirect to cards', function() {
+      $location.path('/test');
+      $scope.redirectCards();
+      expect($location.path()).toBe('/cards');
+    });
+
+    it('it should redirect to cards2', function() {
+      $location.path('/test2');
+      $scope.redirectCards2();
+      expect($location.path()).toBe('/cards2');
+    });
+
+    it('should toggle edit', function() {
+      var card = {
+        personPic:  'picurl',
+        personName: 'Tester',
+        userId:     '001',
+        guesses:    [],
+        mem_rate:   0
+      };
+      $scope.toggleEdit(card);
+      expect(card.editing).toBe(true);
+      expect(card.personNameBackup).toBe('Tester');
+      expect(card.personPicBackup).toBe('picurl');
+      card.personName = 'Name Change';
+      card.personPic = 'avatarurl';
+      $scope.toggleEdit(card);
+      expect(card.editing).toBe(false);
+      expect(card.personNameBackup).toBe(undefined);
+      expect(card.personPicBackup).toBe(undefined);
+      expect(card.personName).toBe('Tester');
+      expect(card.personPic).toBe('picurl');
+    });
   });
 });
