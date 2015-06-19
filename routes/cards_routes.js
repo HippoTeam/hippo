@@ -51,12 +51,9 @@ module.exports = function(router) {
     var updateInfo = req.body;  //  {_id(card):..., guesses: ...}
     var addGuesses = req.body.guesses;
 
-    console.log("GUESSES: ", addGuesses);
-    console.log("UPDATE INFO: ", updateInfo);
     Card.findOne({_id: updateInfo._id}, function(err, card) {
       if (err) { return handleError(err, 'internal server err', 'Error finding card. Error: '); }
 
-      console.log("CARD FOUND: ", card);
       // Add guesses, update mem_rate
       addGuesses.forEach(function(elem) { card.guesses.push(elem) });
       card.mem_rate = calcMemRate(card.personName, card.guesses);
