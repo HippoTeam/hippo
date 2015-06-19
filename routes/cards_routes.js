@@ -20,7 +20,7 @@ module.exports = function(router) {
     Card.find({userId: req.user.facebook_id, mem_rate: { $lte: percent }}, function(err, cards) {
       var card;
       if (err ) { return handleError(err, res, 'internal server error'); }
-      if (cards.length === 0) {   // at least one card
+      if (cards.length === 0) {   // no cards
         return handleError(false, res, 'Good job - no more user scores this low!');
       }
       card = randomArray(cards, 1);   // take one, keep it random
@@ -29,18 +29,23 @@ module.exports = function(router) {
         if (error) { return handleError(error, res, 'internal server error'); }
 
         // remove duplicate names from guesses
-        otherNames.filter(function(elem) { elem.personName !==  elem.personName});
+        var array = randomArray(otherNames, req.user.settings.numButtons);
+        array.filter(function(elem) { card.personName !==  elem.personName});
+
+        // if now too many after removing duplciate, return error msg
         if (otherNames < req.user.settings.numButtons - 1) {
           return handleError(error, res, 'not enough cards')
         }
 
-        var array         = randomArray(otherNames, req.user.settings.numButtons-1);
+        // if too many still, remove one
+        if (array.length === (req.user.settings.numButtons) ) { array.pop(); }
+
         var returnObj     = {};
         returnObj.pic_url = card[0].personPic;
         returnObj.answer  = card[0].personName;
         returnObj._id     = card[0]._id;
         var namesArray    = array.map(function(obj) { return obj.personName; });
-        namesArray.unshift(card[0].personName);        // add answer into names array
+        namesArray.push(card[0].personName);        // add answer into names array
         returnObj.names   = randomArray(namesArray);
         res.json(returnObj);
       });
