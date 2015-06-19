@@ -9,7 +9,11 @@ var User   = require('../../models/User.js');
 
 module.exports = function createUserAndEat(callback) {
   var userInfo = {  access_token: '1234abcd',
-                    facebook_id:  '1234'
+                    facebook_id:  '1234',
+                    settings: {
+                      num_buttons:       4,
+                      mem_rate_filter:  100
+                    }
                   };
   var newUser  = new User(userInfo);
   newUser.save(function(err, user) {

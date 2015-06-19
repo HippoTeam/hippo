@@ -8,19 +8,10 @@ module.exports = function(app) {
     // If not signed in, redirect
     if (!auth.isSignedIn()) { $location.path('/login'); }
 
-
     var Card = resource('cards');
-    $scope.errors  = [];
     $scope.cards   = [];
     $scope.guesses = [];
-
-    $scope.redirectCards = function() {
-      $location.path('/cards');
-    };
-
-    $scope.redirectCards2 = function() {
-      $location.path('/cards2');
-    };
+    $scope.errors  = [];
 
     $scope.getAll = function() {
       Card.getAll(function(err, data) {
@@ -31,6 +22,59 @@ module.exports = function(app) {
         $scope.guesses = [];
       });
     };
+
+    $scope.isFriend = function(guess) {
+      updateGuesses(guess);
+
+      if (guess === $scope.cards.answer) {
+        document.getElementsByName(guess)[0].style.backgroundColor = "green";
+        showToast('Correct!!', 'correct');
+
+        // send data to server & go to next card
+        return submitAndNext($scope.guesses);
+      }
+      showToast('Wrong, Try Again!', 'incorrect');
+        document.getElementsByName(guess)[0].style.backgroundColor = 'lightcoral';
+
+      function showToast(message, className) {
+        $mdToast.show({
+          parent: 'main',
+          template: '<md-toast class="md-toast ' + className + '">' + message + '</md-toast>',
+          hideDelay: 1000,
+          position: 'bottom left'
+        });
+      }
+    };
+
+    function submitAndNext(guesses) {
+      var guessesObj = {
+        _id:     $scope.cards._id,
+        guesses: $scope.guesses
+      };
+      Card.update(guessesObj, function(err, data) {
+        if (err && err.reset) { return auth.resetEat(); }
+        if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
+        if ($location.path() === '/cards') {
+          return ($timeout($scope.redirectCards2, 500));
+        }
+        return ($timeout($scope.redirectCards, 500));
+      });
+    }
+
+    $scope.redirectCards = function() {
+      $location.path('/cards');
+    };
+
+    $scope.redirectCards2 = function() {
+      $location.path('/cards2');
+    };
+
+    // Add name to guesses array, if not already in
+    function updateGuesses(name) {
+      if (!(_.includes($scope.guesses, name))) {
+        $scope.guesses.push(name);
+      }
+    }
 
     $scope.createNewCard = function(card) {
       var newCard = copy(card);
@@ -77,45 +121,5 @@ module.exports = function(app) {
       $scope.getAll();
     };
 
-    $scope.isFriend = function(guess) {
-      updateGuesses(guess);
-
-      if (guess === $scope.cards.answer) {
-        document.getElementsByName(guess)[0].style.backgroundColor = "green";
-        showToast('Correct!!', 'correct');
-
-        // send data to server & go to next card
-        return submitAndNext($scope.guesses);
-      }
-      showToast('Wrong, Try Again!', 'incorrect');
-        document.getElementsByName(guess)[0].style.backgroundColor = 'lightcoral';
-
-      function showToast(message, className) {
-        $mdToast.show({
-          parent: 'main',
-          template: '<md-toast class="md-toast ' + className + '">' + message + '</md-toast>',
-          hideDelay: 1000,
-          position: 'bottom left'
-        });
-      }
-    };
-
-    function submitAndNext(guesses) {
-      var guessesObj = {_id:     $scope.cards._id,
-                        guesses: $scope.guesses};
-      Card.update(guessesObj, function(err, data) {
-        if (err && err.reset) { return auth.resetEat(); }
-        if (err) { $scope.errors.push('Sorry, something went wrong & we could not save last card score'); }
-        if ($location.path() === '/cards') {
-          return ($timeout($scope.redirectCards2, 500));
-        }
-        return ($timeout($scope.redirectCards, 500));
-      });
-    }
-
-    // Add name to guesses array, if not already in
-    function updateGuesses(name) {
-      if( !_.includes($scope.guesses, name) ) { $scope.guesses.push(name); }
-    }
   }]);
 };
