@@ -18,6 +18,15 @@ module.exports = function(app, passport) {
     // )
   );
 
+ // Facebook Frontdoor
+  app.get('/auth/facebook/frontdoor',
+    passport.authenticate('facebook',
+      { session: false,
+        scope: ['user_friends']
+      }
+    )
+  );
+
   // Redirect
   app.get('/auth/facebook/callback',
     passport.authenticate('facebook',
