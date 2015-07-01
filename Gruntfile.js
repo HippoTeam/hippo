@@ -21,6 +21,9 @@ module.exports = function(grunt) {
         output: {
           path: 'build/',
           file: 'bundle.js'
+        },
+        module: {
+          loaders: []
         }
       },
       prod: {
@@ -28,6 +31,9 @@ module.exports = function(grunt) {
         output: {
           path: 'prod/',
           file: 'bundle.js'
+        },
+        module: {
+          loaders: []
         }
       },
       test: {
@@ -35,6 +41,9 @@ module.exports = function(grunt) {
         output: {
           path: 'test/client/',
           file: 'test_bundle.js'
+        },
+        module: {
+          loaders: []
         }
       },
       karma_test: {
@@ -42,6 +51,9 @@ module.exports = function(grunt) {
         output: {
           path: 'test/karma_tests/',
           file: 'bundle.js'
+        },
+        module: {
+          loaders: []
         }
       }
     },
