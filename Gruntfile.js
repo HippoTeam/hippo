@@ -94,11 +94,10 @@ module.exports = function(grunt) {
 
     jshint: {
       server: {
-        src: ['Gruntfile.js',
-              '/lib/**/*.js',
-              '/models/**/*.js',
-              '/routes/**/*.js',
-              '/test/*test.js',
+        src: ['./lib/**/*.js',
+              './models/**/*.js',
+              './routes/**/*.js',
+              './test/*test.js',
               '*.js'
              ],
         options: {
