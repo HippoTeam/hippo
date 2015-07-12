@@ -60,7 +60,6 @@ module.exports = function(app, passport) {
 
     //Find my user and send that back
     User.findOne({facebook_id: facebookId[username] }, function(err, user) {
-    // User.findOne({ facebook_id: '10104208393961668' }, function(err, user) {
       if (err  ) { return done('database error'); }
       if (!user) { return res.status(401).json({error: true, msg: 'user not found'})};
       //If user is already in the database return the user
